@@ -11,6 +11,14 @@ export default bundleAnalyzer({
   eslint: {
     dirs: ['.'],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+    ],
+  },
   poweredByHeader: false,
   reactStrictMode: true,
   webpack: (config) => {

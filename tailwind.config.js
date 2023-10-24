@@ -1,7 +1,12 @@
+const tailwindcssforms = require('@tailwindcss/forms');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    borderWidth: {
+      1: '1px',
+    },
     fontSize: {
       xs: '0.75rem',
       sm: '0.875rem',
@@ -16,6 +21,32 @@ module.exports = {
     },
     extend: {
       colors: {
+        borderDeemphasis: '#C7CADC',
+        borderMain: '#BCBFD1',
+        darkBorderMain: '#33354E',
+        darkBorderDeemphasis: '#22232F',
+        surfacePrimary: '#D8DAE9',
+        darkSurfacePrimary: '#191A22',
+        surfaceSecondary: '#E1E3EF',
+        darkSurfaceSecondary: '#1F2029',
+        textEmphasis: '#1E1F27',
+        darkTextEmphasis: '#FFFFFF',
+        textDeemphasis: '',
+        darkTextDeemphasis: '#858697',
+        textMain: '#2C2E39',
+        darkTextMain: '#D2D3E0',
+        textPlaceholder: '#8F93AE',
+        darkTextPlaceholder: '#63657E',
+        buttonPrimaryText: '#FFFFFF',
+        buttonSecondaryText: '#545671',
+        darkButtonSecondaryText: '#D2D3E0',
+        buttonPrimaryBackground: '#4F46E5',
+        buttonPrimaryBackgroundHover: '#6366F1',
+        buttonSecondaryBackground: '#CFD0E1',
+        darkButtonSecondaryBackground: '#272939',
+        buttonSecondaryBackgroundHover: '#2E3143',
+        inputBackground: '#F1F3F9',
+        darkInputBackground: '#13141A',
         gray: {
           100: '#f7fafc',
           200: '#edf2f7',
@@ -39,7 +70,10 @@ module.exports = {
           900: '#2a4365',
         },
       },
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+      },
     },
   },
-  plugins: [],
+  plugins: [tailwindcssforms],
 };

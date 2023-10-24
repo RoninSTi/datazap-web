@@ -1,17 +1,10 @@
-import { createClient } from '@libsql/client';
-import { drizzle } from 'drizzle-orm/libsql';
-import { migrate } from 'drizzle-orm/libsql/migrator';
+import { connect } from '@planetscale/database';
+import { drizzle } from 'drizzle-orm/planetscale-serverless';
 
-import { Env } from './Env.mjs';
-
-const client = createClient({
-  url: Env.DATABASE_URL,
-  authToken: Env.DATABASE_AUTH_TOKEN,
+const connection = connect({
+  host: process.env.DATABASE_HOST,
+  username: process.env.DATABASE_USERNAME,
+  password: process.env.DATABASE_PASSWORD,
 });
 
-export const db = drizzle(client);
-
-// Disable migrate function if using Edge runtime for local environment and use `drizzle-kit push` instead
-if (process.env.NODE_ENV !== 'production') {
-  await migrate(db, { migrationsFolder: './migrations' });
-}
+export const db = drizzle(connection);

@@ -2,7 +2,10 @@ import '@/styles/global.css';
 
 import type { Metadata } from 'next';
 
+import { NextAuthProvider } from './providers';
+
 export const metadata: Metadata = {
+  title: 'DataZap',
   icons: [
     {
       rel: 'apple-touch-icon',
@@ -36,12 +39,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <NextAuthProvider>{children}</NextAuthProvider>
+      </body>
     </html>
   );
 }
-
-// Enable edge runtime but you are required to disable the `migrate` function in `src/libs/DB.ts`
-// Unfortunately, this also means it will also disable the automatic migration of the database
-// And, you will have to manually migrate it with `drizzle-kit push`
-// export const runtime = 'edge';
