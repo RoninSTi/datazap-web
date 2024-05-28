@@ -40,12 +40,14 @@ const OnboardingUpload: React.FC<Props> = ({
       />
       <div
         className="h-[121px] w-[420px] bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${coverUrl || ONBOARDING_COVER})` }}
+        style={{ backgroundImage: `url(${coverUrl || ONBOARDING_COVER.src})` }}
       />
       <div className="relative h-[75px] w-[420px] rounded-b-md bg-surfaceTertiary dark:bg-darkSurfaceTertiary" />
       <div
         className="absolute bottom-[31px] left-[20px] h-[72px] w-[72px] rounded-md bg-contain bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${profileUrl || ONBOARDING_PROFILE})` }}
+        style={{
+          backgroundImage: `url(${profileUrl || ONBOARDING_PROFILE.src})`,
+        }}
       />
       <UploadButtonWrapper
         className="absolute bottom-[14px] left-[75px]"

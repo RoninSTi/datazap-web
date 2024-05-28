@@ -7,10 +7,10 @@ import { ProtectedPage } from '@/components/ProtectedPage';
 const DashboardPage = () => {
   return (
     <ProtectedPage>
-        <div>
-            <NavBar />
-            <Header />
-        </div>
+      <div>
+        <NavBar />
+        <Header />
+      </div>
     </ProtectedPage>
   );
 };

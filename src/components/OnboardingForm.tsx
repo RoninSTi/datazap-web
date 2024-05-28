@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
@@ -26,6 +27,8 @@ const OnboardingForm = () => {
     watch,
   } = useForm<FormFields>();
 
+  const router = useRouter();
+
   const [image, setImage] = useState<string | null>(null);
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
 
@@ -43,8 +46,14 @@ const OnboardingForm = () => {
     setImage(url);
   };
 
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    updateUser.mutate({ username: data.username, image, backgroundImage });
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    await updateUser.mutate({
+      username: data.username,
+      image,
+      backgroundImage,
+    });
+
+    router.push('/dashboard');
   };
 
   const formIndicator = () => {
