@@ -6,7 +6,7 @@ import type { PropsWithChildren } from 'react';
 type Props = {
   className?: string;
   id?: string;
-  onClick: () => void;
+  onClick?: () => void;
   variant?: 'primary' | 'bubble';
 } & PropsWithChildren;
 

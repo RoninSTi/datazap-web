@@ -1,27 +1,29 @@
 import Link from 'next/link';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { Button } from '@/components/Button';
 import { FormInput } from '@/components/FormInput';
 import { GoogleAuthButton } from '@/components/GoogleAuthButton';
 import { HorizDivider } from '@/components/HorizDivider';
 import { LogoZ } from '@/components/LogoZ';
-import { useForm, SubmitHandler } from 'react-hook-form';
 
 type FormFields = {
-    email: string;
-    password: string;
-}
+  email: string;
+  password: string;
+};
 
 const LoginForm = () => {
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-      } = useForm<FormFields>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormFields>();
 
-      const onSubmit: SubmitHandler<FormFields> = data => {
-        console.log({ data })
-      }
+  const onSubmit: SubmitHandler<FormFields> = (data) => {
+    console.log({ data });
+  };
+
   return (
     <div className="sm:mx-auto sm:w-full sm:max-w-sm">
       <div className="mb-10 flex flex-col items-center justify-center">
@@ -62,8 +64,25 @@ const LoginForm = () => {
       <HorizDivider label="OR" />
       <div className="mb-6">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormInput<FormFields> className="mb-2" errors={errors} id="email" label="Email" name="email" register={register} rules={{ required: 'Email is required.'}} type="text" />
-          <FormInput<FormFields> id="password" errors={errors} label="Password" name="password" register={register} rules={{ required: 'Password is required.'}} type="password" />
+          <FormInput<FormFields>
+            className="mb-2"
+            errors={errors}
+            id="email"
+            label="Email"
+            name="email"
+            register={register}
+            rules={{ required: 'Email is required.' }}
+            type="text"
+          />
+          <FormInput<FormFields>
+            id="password"
+            errors={errors}
+            label="Password"
+            name="password"
+            register={register}
+            rules={{ required: 'Password is required.' }}
+            type="password"
+          />
           <Button className="mt-2 w-full" type="submit" variant="secondary">
             Continue
           </Button>

@@ -37,7 +37,7 @@ type MeResponse = {
 };
 
 export const getMe = async () => {
-  const url = 'api/user/me';
+  const url = '/api/user/me';
 
   const { data } = await axios.get<MeResponse>(url);
 

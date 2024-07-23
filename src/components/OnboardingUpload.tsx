@@ -4,8 +4,8 @@ import { useState } from 'react';
 import ONBOARDING_BROWSER_BAR from '../../public/assets/images/onboarding_browser_bar.png';
 import ONBOARDING_COVER from '../../public/assets/images/onboarding_cover.png';
 import ONBOARDING_PROFILE from '../../public/assets/images/onboarding_profile.png';
-import { Edit } from './Edit';
 import { IconButton } from './IconButton';
+import { Edit } from './Icons/Edit';
 import { UploadButtonWrapper } from './UploadButtonWrapper';
 
 type Props = {
@@ -55,7 +55,7 @@ const OnboardingUpload: React.FC<Props> = ({
       >
         {({ openFileDialog }) => (
           <IconButton onClick={openFileDialog} variant="bubble">
-            <Edit className="h-5 w-5" />
+            <Edit />
           </IconButton>
         )}
       </UploadButtonWrapper>
@@ -65,7 +65,7 @@ const OnboardingUpload: React.FC<Props> = ({
       >
         {({ openFileDialog }) => (
           <IconButton onClick={openFileDialog} variant="bubble">
-            <Edit className="h-5 w-5" />
+            <Edit />
           </IconButton>
         )}
       </UploadButtonWrapper>

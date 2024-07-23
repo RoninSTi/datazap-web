@@ -1,29 +1,30 @@
-"use client";
-import { useEffect } from "react";
-import { signIn, useSession } from "next-auth/react";
+'use client';
 
-import { Button } from "@/components/Button";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+
+import { Button } from '@/components/Button';
 
 type Props = {
   className?: string;
 };
 
-const GoogleAuthButton: React.FC<Props> = ({ className = "" }) => {
+const GoogleAuthButton: React.FC<Props> = ({ className = '' }) => {
   const { data: session } = useSession();
 
   const router = useRouter();
 
   useEffect(() => {
     if (session && !session?.userDetails?.username) {
-      router.push("/auth/onboarding");
+      router.push('/auth/onboarding');
     } else if (session) {
-      router.push("/dashboard");
+      router.push('/dashboard');
     }
   }, [router, session]);
 
   const handleOnClick = () => {
-    signIn("google", {
+    signIn('google', {
       redirect: false,
     });
   };

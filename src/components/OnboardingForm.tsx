@@ -11,7 +11,7 @@ import { Button } from '@/components/Button';
 import { FormInput } from '@/components/FormInput';
 import { LogoZ } from '@/components/LogoZ';
 
-import { Check } from './Check';
+import { Check } from './Icons/Check';
 import { LoadingSpinner } from './LoadingSpinner';
 import { OnboardingUpload } from './OnboardingUpload';
 

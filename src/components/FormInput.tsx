@@ -1,13 +1,15 @@
-import { Input, InputProps } from "@/components/Input";
-import {
+import { ErrorMessage } from '@hookform/error-message';
+import type {
   DeepMap,
   FieldError,
-  UseFormRegister,
   FieldValues,
   Path,
   RegisterOptions,
-} from "react-hook-form";
-import { ErrorMessage } from "@hookform/error-message";
+  UseFormRegister,
+} from 'react-hook-form';
+
+import type { Props } from '@/components/Input';
+import { Input } from '@/components/Input';
 
 export type FormInputProps<TFormValues extends FieldValues> = {
   errors?: Partial<DeepMap<TFormValues, FieldError>>;
@@ -15,7 +17,8 @@ export type FormInputProps<TFormValues extends FieldValues> = {
   name: Path<TFormValues>;
   register?: UseFormRegister<TFormValues>;
   rules?: RegisterOptions;
-} & Omit<InputProps, "name">;
+  label?: string;
+} & Omit<Props, 'name' | 'label'>;
 
 const FormInput = <TFormValues extends Record<string, unknown>>({
   className,
@@ -29,12 +32,14 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
   return (
     <div className={className} aria-live="polite">
       <label className="block" htmlFor={props.id}>
-        <div className="flex flex-row items-center justify-between w-full">
-          <span className="text-xs text-textDeemphasis dark:text-darkTextDeemphasis">
-            {props.label}
-          </span>
-          {!!indicator && indicator}
-        </div>
+        {props.label && (
+          <div className="flex w-full flex-row items-center justify-between">
+            <span className="text-xs text-textDeemphasis dark:text-darkTextDeemphasis">
+              {props.label}
+            </span>
+            {!!indicator && indicator}
+          </div>
+        )}
 
         <Input
           name={name}
@@ -45,7 +50,7 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
           errors={errors}
           name={name as any}
           render={({ message }) => (
-            <p className="mt-1 font-serif text-sm text-left block text-red-600">
+            <p className="mt-1 block text-left font-serif text-sm text-red-600">
               {message}
             </p>
           )}

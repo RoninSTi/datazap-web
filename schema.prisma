@@ -1,7 +1,6 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  relationMode = "prisma"
 }
 
 generator client {
@@ -47,6 +46,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
   userDetails   UserDetails?
+  logs          Log[]
+  projects      Project[]
 }
 
 model UserDetails {
@@ -65,4 +66,31 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Log {
+  id        String   @id @default(cuid())
+  createdBy String
+  user    User     @relation(fields: [createdBy], references: [id]) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  filename String
+  title      String
+  notes   String?
+  url     String
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+  size Int
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  createdBy String
+  user    User     @relation(fields: [createdBy], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  description String?
+  photo     String?
+  logs      Log[]
 }

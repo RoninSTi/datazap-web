@@ -1,11 +1,9 @@
-import { PrismaClient } from '@prisma/client';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/config/auth';
-
-const prisma = new PrismaClient();
+import prisma from '@/database/client';
 
 export async function PUT(request: NextRequest) {
   const session = await getServerSession(authOptions);

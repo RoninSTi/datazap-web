@@ -8,8 +8,6 @@ import { useEffect } from 'react';
 const ProtectedPage: React.FC<PropsWithChildren> = ({ children }) => {
   const { status } = useSession();
 
-  console.log({ status });
-
   useEffect(() => {
     if (status === 'unauthenticated') redirect('/auth/signin');
   }, [status]);

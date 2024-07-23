@@ -28,7 +28,7 @@ const Button: React.FC<Props> = ({
         'flex-row',
         'items-center',
         'justify-center',
-        'gap-2',
+        'gap-3',
         'text-sm',
         'px-4',
         'py-2',

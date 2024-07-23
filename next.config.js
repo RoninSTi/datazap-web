@@ -14,6 +14,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: `${process.env.S3_UPLOAD_BUCKET}.s3.${process.env.S3_UPLOAD_REGION}.amazonaws.com`,
       },
+      {
+        protocol: 'https',
+        hostname: `datazap-images.s3.amazonaws.com`,
+      },
+      {
+        protocol: 'https',
+        hostname: `datazap-images.s3.us-east-2.amazonaws.com`,
+      },
     ],
   },
 };

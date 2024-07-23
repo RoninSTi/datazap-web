@@ -1,16 +1,12 @@
 'use client';
 
-import { Header } from '@/components/Header';
-import { NavBar } from '@/components/NavBar';
 import { ProtectedPage } from '@/components/ProtectedPage';
+import { SubHeader } from '@/components/SubHeader';
 
 const DashboardPage = () => {
   return (
     <ProtectedPage>
-      <div>
-        <NavBar />
-        <Header />
-      </div>
+      <SubHeader />
     </ProtectedPage>
   );
 };
