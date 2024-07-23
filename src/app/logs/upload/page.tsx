@@ -6,11 +6,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useGetMe } from '@/api/queries/user';
 import { DragNdrop } from '@/components/DragNDropUpload/DragNDrop';
-import { LogTable } from '@/components/LogTable/LogTable';
+import { LogsToUploadTable } from '@/components/LogTable/UploadTable/LogsToUploadTable';
 import { PageHeader } from '@/components/PageHeader';
 import { ProtectedPage } from '@/components/ProtectedPage';
 import { PageHeaderActions } from '@/page-components/logs/create/PageHeaderActions';
 import { useLogStore } from '@/store/logs';
+import type { LogToBeUploaded } from '@/types/log';
 
 const s3params = {
   accessKeyId: process.env.NEXT_PUBLIC_S3_UPLOAD_KEY,
@@ -19,15 +20,6 @@ const s3params = {
 };
 
 const s3 = new S3(s3params);
-
-export type LogToBeUploaded = {
-  filename: string;
-  url: string;
-  size: number;
-  title: string;
-  key: string;
-  notes?: string;
-};
 
 const LogsCreatePage: React.FC = () => {
   const { logs, setLogs } = useLogStore();
@@ -77,8 +69,10 @@ const LogsCreatePage: React.FC = () => {
     <ProtectedPage>
       <PageHeader actions={<PageHeaderActions />} title="Upload Logs" />
       <div className="py-10">
-        <DragNdrop onFilesSelected={handleOnFilesSelected} />
-        <LogTable />
+        <div className="px-10">
+          <DragNdrop onFilesSelected={handleOnFilesSelected} />
+        </div>
+        <LogsToUploadTable />
       </div>
     </ProtectedPage>
   );

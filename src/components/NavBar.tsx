@@ -25,7 +25,7 @@ const NavBar = () => {
             <Logo />
           </div>
           <NavBarLink icon={<Home />} path="/dashboard" title="Home" />
-          <NavBarLink icon={<Logs />} path="/dashboard/logs" title="Logs" />
+          <NavBarLink icon={<Logs />} path="/logs" title="Logs" />
           <NavBarLink
             icon={<Projects />}
             path="/dashboard/projects"

@@ -48,6 +48,7 @@ model User {
   userDetails   UserDetails?
   logs          Log[]
   projects      Project[]
+  favoriteLogs  LogFavorite[]
 }
 
 model UserDetails {
@@ -81,6 +82,18 @@ model Log {
   projectId String?
   project   Project? @relation(fields: [projectId], references: [id])
   size Int
+  favorite LogFavorite[]
+}
+
+model LogFavorite {
+  logId String
+  favoritedBy String
+  createdAt DateTime @default(now())  
+
+  Log Log @relation(fields: [logId], references: [id])
+  User User @relation(fields: [favoritedBy], references: [id])
+
+  @@id([logId, favoritedBy])
 }
 
 model Project {

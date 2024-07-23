@@ -30,7 +30,9 @@ export async function POST(request: LogPostRequest) {
       },
     );
 
-  const logs: LogPostRequestBody[] = await request.json();
+  const body: { data: LogPostRequestBody[] } = await request.json();
+
+  const logs = body.data;
 
   await prisma.log.createMany({
     data: logs.map((log) => ({ ...log, createdBy: userId })),
@@ -69,6 +71,25 @@ export async function GET() {
   const logs = await prisma.log.findMany({
     where: {
       createdBy: userId,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: {
+      id: true,
+      createdAt: true,
+      updatedAt: true,
+      createdBy: true,
+      title: true,
+      url: true,
+      size: true,
+      notes: true,
+      project: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
     },
   });
 

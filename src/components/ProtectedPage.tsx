@@ -12,7 +12,7 @@ const ProtectedPage: React.FC<PropsWithChildren> = ({ children }) => {
     if (status === 'unauthenticated') redirect('/auth/signin');
   }, [status]);
 
-  return children;
+  return <div className="h-full">{children}</div>;
 };
 
 export { ProtectedPage };

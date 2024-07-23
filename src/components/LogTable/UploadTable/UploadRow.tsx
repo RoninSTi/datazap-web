@@ -1,40 +1,50 @@
-import type { PropsWithChildren } from 'react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
-import { type LogToBeUploaded } from '@/app/logs/upload/page';
 import { useLogStore } from '@/store/logs';
+import type { LogToBeUploaded } from '@/types/log';
 import { humanFileSize } from '@/utils/humanFileSize';
 
-import { FormInput } from '../FormInput';
-import { IconButton } from '../IconButton';
-import { Log } from '../Icons/Log';
-import { Remove } from '../Icons/Remove';
+import { FormInput } from '../../FormInput';
+import { IconButton } from '../../IconButton';
+import { Log as LogIcon } from '../../Icons/Log';
+import { Remove } from '../../Icons/Remove';
+import { Cell } from '../../Table/Cell';
+import { Row } from '../../Table/Row';
 
 type Props = {
   log: LogToBeUploaded;
 };
-
-const Cell: React.FC<PropsWithChildren<unknown>> = ({ children }) => (
-  <div className="flex flex-1 items-center pr-4">{children}</div>
-);
 
 type FormFields = {
   title: string;
   notes: string;
 };
 
-const Row: React.FC<Props> = ({ log }) => {
+const UploadRow: React.FC<Props> = ({ log }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<FormFields>({
     defaultValues: {
       title: log.title,
     },
   });
+
+  React.useEffect(() => {
+    const subscription = watch((value) => {
+      const updatedLog = {
+        ...log,
+        ...value,
+      };
+
+      replaceLog(updatedLog);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   const { removeLog, replaceLog } = useLogStore();
 
@@ -54,10 +64,7 @@ const Row: React.FC<Props> = ({ log }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div
-        className="flex flex-1 border-b-1 border-borderDeemphasis px-10 py-5 dark:border-darkBorderDeemphasis"
-        key={log.key}
-      >
+      <Row>
         <div className="mr-4 flex items-center">
           <input
             type="checkbox"
@@ -66,7 +73,7 @@ const Row: React.FC<Props> = ({ log }) => {
         </div>
         <Cell>
           <div className="mr-4 text-borderEmphasis">
-            <Log />
+            <LogIcon />
           </div>
           <div>
             <div className="text-sm font-semibold text-textMain dark:text-darkTextMain">
@@ -102,7 +109,7 @@ const Row: React.FC<Props> = ({ log }) => {
         </Cell>
         <Cell>
           <select className="w-full rounded-md border-1 border-borderMain bg-buttonSecondaryBackground px-3 py-1 text-sm text-buttonSecondaryText dark:border-darkBorderMain dark:bg-darkButtonSecondaryBackground dark:text-darkButtonSecondaryText">
-            <option selected>Select</option>
+            <option defaultValue="">Select</option>
             {projects.map((el) => (
               <option key={el}>{el}</option>
             ))}
@@ -113,9 +120,9 @@ const Row: React.FC<Props> = ({ log }) => {
             <Remove />
           </IconButton>
         </div>
-      </div>
+      </Row>
     </form>
   );
 };
 
-export { Row };
+export { UploadRow };
