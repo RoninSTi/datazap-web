@@ -9,7 +9,7 @@ import { DragNdrop } from '@/components/DragNDropUpload/DragNDrop';
 import { LogsToUploadTable } from '@/components/LogTable/UploadTable/LogsToUploadTable';
 import { PageHeader } from '@/components/PageHeader';
 import { ProtectedPage } from '@/components/ProtectedPage';
-import { PageHeaderActions } from '@/page-components/logs/create/PageHeaderActions';
+import { PageHeaderActions } from '@/page-components/logs/upload/PageHeaderActions';
 import { useLogStore } from '@/store/logs';
 import type { LogToBeUploaded } from '@/types/log';
 

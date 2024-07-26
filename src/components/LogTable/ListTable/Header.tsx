@@ -12,10 +12,10 @@ const Header: React.FC = () => {
       </div>
       <HeaderCell expanding>Name</HeaderCell>
       <HeaderCell expanding>Notes</HeaderCell>
-      <HeaderCell>Project</HeaderCell>
-      <HeaderCell>Added</HeaderCell>
-      <HeaderCell />
-      <HeaderCell />
+      <HeaderCell className="w-[185px] pl-5">Project</HeaderCell>
+      <HeaderCell className="w-[139px] pl-6">Added</HeaderCell>
+      <HeaderCell className="w-[48px]" />
+      <HeaderCell className="w-[56px]" />
     </TableHeader>
   );
 };

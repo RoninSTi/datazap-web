@@ -20,6 +20,7 @@
     "aws-sdk": "^2.1637.0",
     "axios": "^1.6.0",
     "classnames": "^2.3.2",
+    "date-fns": "^3.6.0",
     "framer-motion": "^11.2.10",
     "lodash.get": "^4.4.2",
     "next": "14.0.1",

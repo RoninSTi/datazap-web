@@ -6,12 +6,12 @@ type Props = {
   variant: 'main' | 'secondary';
 };
 
-const BodyLargeBold: React.FC<PropsWithChildren<Props>> = ({
+const BodyMedium: React.FC<PropsWithChildren<Props>> = ({
   children,
   variant,
 }) => (
   <span
-    className={classNames('font-semibold', {
+    className={classNames('text-sm font-medium', {
       'text-textMain dark:text-darkTextMain': variant === 'main',
       'text-textDeemphasis dark:text-darkTextDeemphasis':
         variant === 'secondary',
@@ -21,4 +21,4 @@ const BodyLargeBold: React.FC<PropsWithChildren<Props>> = ({
   </span>
 );
 
-export { BodyLargeBold };
+export { BodyMedium };

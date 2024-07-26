@@ -3,15 +3,15 @@ import type { PropsWithChildren } from 'react';
 import React from 'react';
 
 type Props = {
-  variant: 'main' | 'secondary';
+  variant?: 'main' | 'secondary';
 };
 
-const BodyLargeBold: React.FC<PropsWithChildren<Props>> = ({
+const BodyMediumBold: React.FC<PropsWithChildren<Props>> = ({
   children,
-  variant,
+  variant = 'main',
 }) => (
   <span
-    className={classNames('font-semibold', {
+    className={classNames('text-sm font-semibold', {
       'text-textMain dark:text-darkTextMain': variant === 'main',
       'text-textDeemphasis dark:text-darkTextDeemphasis':
         variant === 'secondary',
@@ -21,4 +21,4 @@ const BodyLargeBold: React.FC<PropsWithChildren<Props>> = ({
   </span>
 );
 
-export { BodyLargeBold };
+export { BodyMediumBold };
