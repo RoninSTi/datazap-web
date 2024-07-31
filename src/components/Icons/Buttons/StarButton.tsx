@@ -8,7 +8,7 @@ import { StarHover } from '../StarHover';
 
 type Props = {
   isActive: boolean;
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const StarButton: React.FC<Props> = ({ isActive, onClick }) => {

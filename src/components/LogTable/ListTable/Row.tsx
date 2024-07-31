@@ -1,6 +1,8 @@
 import { format } from 'date-fns';
 import React from 'react';
 
+import { useFavoriteLog } from '@/api/mutations/favorites';
+import { Checkbox } from '@/components/Checkbox';
 import { KebobButton } from '@/components/Icons/Buttons/KebobButton';
 import { StarButton } from '@/components/Icons/Buttons/StarButton';
 import { Logs } from '@/components/Icons/Logs';
@@ -12,23 +14,35 @@ import { Cell } from '../../Table/Cell';
 import { Row as TableRow } from '../../Table/Row';
 
 type Props = {
+  isFavorite: boolean;
+  isSelected: boolean;
   log: StoredLog;
 };
 
-const Row: React.FC<Props> = ({ log }) => {
-  const { title, notes, project, createdAt } = log;
+const Row: React.FC<Props> = ({ isFavorite, isSelected, log }) => {
+  const { id, title, notes, project, createdAt } = log;
 
-  const handleOnClickKebob = () => undefined;
+  const favoriteLog = useFavoriteLog();
 
-  const handleOnClickStar = () => undefined;
+  const handleOnClickKebob = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const handleOnClickStar = async (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    event.preventDefault();
+
+    await favoriteLog.mutateAsync({ logId: id });
+  };
+
+  const checkBoxState = (): 'checked' | 'default' =>
+    isSelected ? 'checked' : 'default';
 
   return (
     <TableRow>
       <div className="mr-4 flex items-center">
-        <input
-          type="checkbox"
-          className="h-[18px] w-[18px] rounded-sm bg-transparent accent-darkButtonBgPrimaryActive"
-        />
+        <Checkbox state={checkBoxState()} />
       </div>
       <Cell expanding textAlign="start">
         <div className="mr-4 text-textPlaceholder dark:text-darkTextPlaceholder">
@@ -48,7 +62,7 @@ const Row: React.FC<Props> = ({ log }) => {
         </BodyMedium>
       </Cell>
       <Cell className="w-[48px]">
-        <StarButton onClick={handleOnClickStar} isActive={false} />
+        <StarButton onClick={handleOnClickStar} isActive={isFavorite} />
       </Cell>
       <Cell className="w-[56px]">
         <KebobButton onClick={handleOnClickKebob} />

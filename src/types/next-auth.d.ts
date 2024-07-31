@@ -20,3 +20,11 @@ type LogPostRequestBody = {
 interface LogPostRequest extends NextRequest {
   body: LogPostRequestBody[];
 }
+
+type PostFavoriteLogsBody = {
+  logId: string;
+};
+
+interface PostFavoriteLogsRequest extends NextRequest {
+  body: PostFavoriteLogsBody;
+}

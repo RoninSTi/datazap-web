@@ -6,7 +6,7 @@ import { KebobDefault } from '../KebobDefault';
 import { KebobHover } from '../KebobHover';
 
 type Props = {
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const KebobButton: React.FC<Props> = ({ onClick }) => {

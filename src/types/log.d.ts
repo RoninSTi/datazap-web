@@ -17,3 +17,9 @@ export interface StoredLog extends Log {
   createdAt: string;
   project?: LogProject;
 }
+
+export interface LogFavorite {
+  favoritedBy: string;
+  logId: string;
+  createdAt: string;
+}
