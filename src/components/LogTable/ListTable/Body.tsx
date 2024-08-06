@@ -1,6 +1,7 @@
 import { useGetLogFavorites } from '@/api/queries/favorites';
 import { useGetLogs } from '@/api/queries/logs';
 import { Body as TableBody } from '@/components/Table/Body';
+import { useBulkLogStore } from '@/store/bulkLogs';
 
 import { Empty } from '../Empty';
 import { Row } from './Row';
@@ -9,6 +10,8 @@ const Body: React.FC = () => {
   const { data } = useGetLogs();
 
   const { data: favoriteData } = useGetLogFavorites();
+
+  const { selectedLogs } = useBulkLogStore();
 
   const logs = data?.logs || [];
 
@@ -22,7 +25,7 @@ const Body: React.FC = () => {
             key={log.id}
             log={log}
             isFavorite={favorites?.some((el) => el.logId === log.id) ?? false}
-            isSelected={false}
+            isSelected={selectedLogs.some((el) => el === log.id)}
           />
         ))}
       {logs.length === 0 && <Empty />}

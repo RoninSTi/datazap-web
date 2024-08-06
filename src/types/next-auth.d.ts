@@ -17,6 +17,7 @@ type LogPostRequestBody = {
   projectId?: string;
   size: number;
 };
+
 interface LogPostRequest extends NextRequest {
   body: LogPostRequestBody[];
 }
@@ -27,4 +28,15 @@ type PostFavoriteLogsBody = {
 
 interface PostFavoriteLogsRequest extends NextRequest {
   body: PostFavoriteLogsBody;
+}
+
+type ProjectPostBody = {
+  name: string;
+  description?: string;
+  photo?: string;
+  isPrivate: boolean;
+};
+
+interface ProjectPostRequest extends NextRequest {
+  body: ProjectPostBody;
 }

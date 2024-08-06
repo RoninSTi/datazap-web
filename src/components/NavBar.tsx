@@ -26,11 +26,7 @@ const NavBar = () => {
           </div>
           <NavBarLink icon={<Home />} path="/dashboard" title="Home" />
           <NavBarLink icon={<Logs />} path="/logs" title="Logs" />
-          <NavBarLink
-            icon={<Projects />}
-            path="/dashboard/projects"
-            title="Projects"
-          />
+          <NavBarLink icon={<Projects />} path="/projects" title="Projects" />
         </div>
         <div className="flex items-center justify-center">
           <Button className="mr-6" onClick={handleOnClick} variant="secondary">

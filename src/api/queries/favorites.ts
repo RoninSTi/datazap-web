@@ -16,5 +16,7 @@ export const getLogFavorites = async () => {
 };
 
 export const useGetLogFavorites = () => {
-  return useQuery(['logFavorites'], () => getLogFavorites());
+  return useQuery(['logFavorites'], () => getLogFavorites(), {
+    keepPreviousData: true,
+  });
 };

@@ -16,5 +16,5 @@ export const getLogs = async () => {
 };
 
 export const useGetLogs = () => {
-  return useQuery(['logs'], () => getLogs());
+  return useQuery(['logs'], () => getLogs(), { keepPreviousData: true });
 };

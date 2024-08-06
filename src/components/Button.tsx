@@ -8,9 +8,8 @@ type Props = {
   className?: string;
   disabled?: boolean;
   id?: string;
-  isLink?: false;
   linkTo?: string;
-  onClick: () => void;
+  onClick?: () => void;
   variant?: 'primary' | 'secondary';
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
 } & PropsWithChildren;
@@ -19,7 +18,6 @@ type LinkProps = {
   className?: string;
   disabled?: boolean;
   id?: string;
-  isLink?: true;
   onClick?: () => void;
   variant?: 'primary' | 'secondary';
   linkTo: string;
@@ -31,8 +29,7 @@ const Button: React.FC<Props | LinkProps> = ({
   className = '',
   disabled = false,
   id = '',
-  isLink = false,
-  linkTo = '',
+  linkTo,
   onClick = () => {},
   type = 'button',
   variant = 'primary',
@@ -62,7 +59,7 @@ const Button: React.FC<Props | LinkProps> = ({
         variant === 'secondary',
     },
   );
-  return isLink ? (
+  return linkTo ? (
     <Link className={classes} href={linkTo} id={id}>
       {children}
     </Link>

@@ -106,4 +106,5 @@ model Project {
   description String?
   photo     String?
   logs      Log[]
+  isPrivate Boolean
 }

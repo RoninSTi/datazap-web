@@ -7,14 +7,14 @@ import { HeaderCell } from '@/components/Table/HeaderCell';
 import { useBulkLogStore } from '@/store/bulkLogs';
 
 const Header: React.FC = () => {
-  const { selectedLogs } = useBulkLogStore();
+  const { clearSelected, selectedLogs, selectAll } = useBulkLogStore();
 
   const { data } = useGetLogs();
 
   const logs = data?.logs || [];
 
   const checkboxState = useMemo(() => {
-    if (selectedLogs.length === logs.length) {
+    if (selectedLogs.length === logs.length && logs.length > 0) {
       return 'checked';
     }
 
@@ -22,13 +22,29 @@ const Header: React.FC = () => {
       return 'indeterminate';
     }
 
-    return 'disabled';
+    return 'default';
   }, [logs.length, selectedLogs.length]);
+
+  const handleCheckboxOnChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    switch (checkboxState) {
+      case 'checked':
+      case 'indeterminate':
+        clearSelected();
+        break;
+      case 'default':
+        selectAll(logs.map((el) => el.id));
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <TableHeader>
       <div className="flex pr-4">
-        <Checkbox state={checkboxState} />
+        <Checkbox state={checkboxState} onChange={handleCheckboxOnChange} />
       </div>
       <HeaderCell expanding>Name</HeaderCell>
       <HeaderCell expanding>Notes</HeaderCell>

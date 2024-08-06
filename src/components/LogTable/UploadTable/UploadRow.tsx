@@ -2,6 +2,7 @@ import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
+import { useGetProjects } from '@/api/queries/projects';
 import { useLogStore } from '@/store/logs';
 import type { LogToBeUploaded } from '@/types/log';
 import { humanFileSize } from '@/utils/humanFileSize';
@@ -34,6 +35,8 @@ const UploadRow: React.FC<Props> = ({ log }) => {
     },
   });
 
+  const { removeLog, replaceLog } = useLogStore();
+
   React.useEffect(() => {
     const subscription = watch((value) => {
       const updatedLog = {
@@ -44,11 +47,11 @@ const UploadRow: React.FC<Props> = ({ log }) => {
       replaceLog(updatedLog);
     });
     return () => subscription.unsubscribe();
-  }, [watch]);
+  }, [log, replaceLog, watch]);
 
-  const { removeLog, replaceLog } = useLogStore();
+  const { data: projectData } = useGetProjects();
 
-  const projects: string[] = [];
+  const projects = projectData?.projects ?? [];
 
   const handleOnClickRemove = () => removeLog(log);
 
@@ -60,6 +63,12 @@ const UploadRow: React.FC<Props> = ({ log }) => {
     };
 
     replaceLog(updatedLog);
+  };
+
+  const handleSelectOnChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    console.log({ event });
   };
 
   return (
@@ -108,10 +117,13 @@ const UploadRow: React.FC<Props> = ({ log }) => {
           />
         </Cell>
         <Cell>
-          <select className="w-full rounded-md border-1 border-borderMain bg-buttonSecondaryBackground px-3 py-1 text-sm text-buttonSecondaryText dark:border-darkBorderMain dark:bg-darkButtonSecondaryBackground dark:text-darkButtonSecondaryText">
+          <select
+            className="w-full rounded-md border-1 border-borderMain bg-buttonSecondaryBackground px-3 py-1 text-sm text-buttonSecondaryText dark:border-darkBorderMain dark:bg-darkButtonSecondaryBackground dark:text-darkButtonSecondaryText"
+            onChange={handleSelectOnChange}
+          >
             <option defaultValue="">Select</option>
-            {projects.map((el) => (
-              <option key={el}>{el}</option>
+            {projects.map((project) => (
+              <option key={project.id}>{project.name}</option>
             ))}
           </select>
         </Cell>

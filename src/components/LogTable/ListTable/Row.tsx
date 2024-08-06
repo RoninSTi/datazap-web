@@ -8,6 +8,7 @@ import { StarButton } from '@/components/Icons/Buttons/StarButton';
 import { Logs } from '@/components/Icons/Logs';
 import { BodyMedium } from '@/components/Typography/BodyMedium';
 import { BodyMediumBold } from '@/components/Typography/BodyMediumBold';
+import { useBulkLogStore } from '@/store/bulkLogs';
 import type { StoredLog } from '@/types/log';
 
 import { Cell } from '../../Table/Cell';
@@ -24,6 +25,8 @@ const Row: React.FC<Props> = ({ isFavorite, isSelected, log }) => {
 
   const favoriteLog = useFavoriteLog();
 
+  const { selectLog } = useBulkLogStore();
+
   const handleOnClickKebob = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
@@ -39,10 +42,16 @@ const Row: React.FC<Props> = ({ isFavorite, isSelected, log }) => {
   const checkBoxState = (): 'checked' | 'default' =>
     isSelected ? 'checked' : 'default';
 
+  const handleCheckboxOnChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    selectLog(id);
+  };
+
   return (
     <TableRow>
       <div className="mr-4 flex items-center">
-        <Checkbox state={checkBoxState()} />
+        <Checkbox onChange={handleCheckboxOnChange} state={checkBoxState()} />
       </div>
       <Cell expanding textAlign="start">
         <div className="mr-4 text-textPlaceholder dark:text-darkTextPlaceholder">

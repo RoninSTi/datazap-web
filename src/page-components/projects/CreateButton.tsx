@@ -3,13 +3,13 @@ import React from 'react';
 import { Button } from '@/components/Button';
 import { Upload } from '@/components/Icons/Upload';
 
-const UploadButton: React.FC = () => {
+const CreateButton: React.FC = () => {
   return (
-    <Button variant="primary" linkTo="/logs/upload">
+    <Button variant="primary" linkTo="/projects/create">
       <Upload />
-      <span>Upload Now</span>
+      <span>Create Project</span>
     </Button>
   );
 };
 
-export { UploadButton };
+export { CreateButton };
