@@ -11,6 +11,8 @@ import type {
 import type { Props } from '@/components/Input';
 import { Input } from '@/components/Input';
 
+import { BodyMediumBold } from './Typography/BodyMediumBold';
+
 export type FormInputProps<TFormValues extends FieldValues> = {
   errors?: Partial<DeepMap<TFormValues, FieldError>>;
   indicator?: React.ReactNode;
@@ -34,9 +36,7 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
       <label className="block" htmlFor={props.id}>
         {props.label && (
           <div className="flex w-full flex-row items-center justify-between">
-            <span className="text-xs text-textDeemphasis dark:text-darkTextDeemphasis">
-              {props.label}
-            </span>
+            <BodyMediumBold>{props.label}</BodyMediumBold>
             {!!indicator && indicator}
           </div>
         )}

@@ -28,7 +28,13 @@ const CreateModal: React.FC<Props> = ({ onClose, show }) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormFields>();
+    watch,
+    setValue,
+  } = useForm<FormFields>({
+    defaultValues: {
+      isPrivate: false,
+    },
+  });
 
   const createProject = useCreateProject();
 
@@ -40,6 +46,12 @@ const CreateModal: React.FC<Props> = ({ onClose, show }) => {
     router.push('/projects');
   };
 
+  const handleSwitchOnChange = (checked: boolean) => {
+    setValue('isPrivate', checked);
+  };
+
+  const watchIsPrivate = watch('isPrivate');
+
   return (
     <Modal
       footer={<CreateModalFooter onClose={onClose} />}
@@ -50,7 +62,7 @@ const CreateModal: React.FC<Props> = ({ onClose, show }) => {
       <div className="p-6">
         <form onSubmit={handleSubmit(onSubmit)}>
           <FormInput<FormFields>
-            className="mb-2"
+            className="mb-6"
             errors={errors}
             id="name"
             label="Name"
@@ -61,6 +73,7 @@ const CreateModal: React.FC<Props> = ({ onClose, show }) => {
             type="text"
           />
           <FormInput<FormFields>
+            className="mb-6"
             id="description"
             errors={errors}
             label="Description"
@@ -69,13 +82,11 @@ const CreateModal: React.FC<Props> = ({ onClose, show }) => {
             register={register}
             type="text"
           />
-          <Switch<FormFields>
-            id="isPrivate"
-            errors={errors}
+          <Switch
+            checked={watchIsPrivate}
+            onChange={handleSwitchOnChange}
             label="Make Project Private"
-            name="isPrivate"
-            register={register}
-            subLabel='Project won’t show on your public profile. You can update these settings later.'
+            subLabel="Project won’t show on your public profile. You can update these settings later."
           />
         </form>
       </div>
