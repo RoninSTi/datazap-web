@@ -6,7 +6,7 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 
 const config: Config = {
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/page-components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
@@ -45,6 +45,7 @@ const config: Config = {
         buttonSecondaryText: '#545671',
         darkButtonSecondaryText: '#D2D3E0',
         buttonPrimaryBackground: '#4F46E5',
+        buttonDestructiveBackground: '#DE1647',
         darkButtonBgPrimaryActive: '#787BFF',
         buttonPrimaryBackgroundHover: '#6366F1',
         buttonSecondaryBackground: '#CFD0E1',
@@ -56,6 +57,9 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+      },
+      marginLeft: {
+        6: '1.5rem',
       },
     },
   },

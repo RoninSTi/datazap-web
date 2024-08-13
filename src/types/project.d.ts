@@ -1,3 +1,5 @@
+import type { StoredLog } from './log';
+
 export interface Project {
   id: string;
   isPrivate: boolean;
@@ -7,6 +9,7 @@ export interface Project {
   createdAt: string;
   updatedAt: string;
   createdBy: string;
+  logs: StoredLog[];
 }
 
 export type ProjectToBeCreated = Omit<Project, 'id'>;

@@ -20,12 +20,14 @@ export type FormInputProps<TFormValues extends FieldValues> = {
   register?: UseFormRegister<TFormValues>;
   rules?: RegisterOptions;
   label?: string;
+  inputClassName?: string;
 } & Omit<Props, 'name' | 'label'>;
 
 const FormInput = <TFormValues extends Record<string, unknown>>({
   className,
   errors,
   indicator,
+  inputClassName,
   name,
   register,
   rules,
@@ -43,6 +45,7 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
 
         <Input
           name={name}
+          className={inputClassName}
           {...props}
           {...(register && register(name, rules))}
         />

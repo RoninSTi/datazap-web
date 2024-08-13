@@ -19,16 +19,15 @@ const StarButton: React.FC<Props> = ({ isActive, onClick }) => {
   const activeState = isActive && !isHover;
 
   return (
-    <div
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+    <IconButton
+      onClick={onClick}
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
     >
-      <IconButton onClick={onClick}>
-        {defaultState && <StarDefault />}
-        {isHover && <StarHover />}
-        {activeState && <StarActive />}
-      </IconButton>
-    </div>
+      {defaultState && <StarDefault />}
+      {isHover && <StarHover />}
+      {activeState && <StarActive />}
+    </IconButton>
   );
 };
 

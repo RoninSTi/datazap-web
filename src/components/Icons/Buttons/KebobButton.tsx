@@ -15,15 +15,14 @@ const KebobButton: React.FC<Props> = ({ onClick }) => {
   const defaultState = !isHover;
 
   return (
-    <div
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
+    <IconButton
+      onClick={onClick}
+      onMouseOver={() => setIsHover(true)}
+      onMouseOut={() => setIsHover(false)}
     >
-      <IconButton onClick={onClick}>
-        {defaultState && <KebobDefault />}
-        {isHover && <KebobHover />}
-      </IconButton>
-    </div>
+      {defaultState && <KebobDefault />}
+      {isHover && <KebobHover />}
+    </IconButton>
   );
 };
 

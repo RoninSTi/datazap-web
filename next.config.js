@@ -22,6 +22,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: `datazap-images.s3.us-east-2.amazonaws.com`,
       },
+      {
+        protocol: 'https',
+        hostname: 'datazap-uploads.s3.us-east-2.amazonaws.com',
+      },
     ],
   },
 };

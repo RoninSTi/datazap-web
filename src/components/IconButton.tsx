@@ -7,7 +7,10 @@ type Props = {
   className?: string;
   id?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  variant?: 'primary' | 'bubble';
+  onMouseOver?: () => void;
+  onMouseOut?: () => void;
+  variant?: 'primary' | 'bubble' | 'bubble-destructive';
+  style?: React.CSSProperties;
 } & PropsWithChildren;
 
 const IconButton: React.FC<Props> = ({
@@ -15,6 +18,9 @@ const IconButton: React.FC<Props> = ({
   children,
   id,
   onClick,
+  onMouseOut,
+  onMouseOver,
+  style,
   variant = 'primary',
 }) => {
   return (
@@ -26,9 +32,16 @@ const IconButton: React.FC<Props> = ({
         {
           'rounded-full bg-buttonPrimaryBackground p-2': variant === 'bubble',
         },
+        {
+          'rounded-full bg-buttonDestructiveBackground p-2':
+            variant === 'bubble-destructive',
+        },
       )}
       id={id}
       onClick={onClick}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
+      style={style}
       type="button"
     >
       {children}

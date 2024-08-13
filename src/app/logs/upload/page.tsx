@@ -5,10 +5,10 @@ import { useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useGetMe } from '@/api/queries/user';
-import { DragNdrop } from '@/components/DragNDropUpload/DragNDrop';
 import { LogsToUploadTable } from '@/components/LogTable/UploadTable/LogsToUploadTable';
 import { PageHeader } from '@/components/PageHeader';
 import { ProtectedPage } from '@/components/ProtectedPage';
+import { LogDragNDrop } from '@/page-components/logs/upload/LogDragNDrop';
 import { PageHeaderActions } from '@/page-components/logs/upload/PageHeaderActions';
 import { useLogStore } from '@/store/logs';
 import type { LogToBeUploaded } from '@/types/log';
@@ -70,7 +70,7 @@ const LogsCreatePage: React.FC = () => {
       <PageHeader actions={<PageHeaderActions />} title="Upload Logs" />
       <div className="py-10">
         <div className="px-10">
-          <DragNdrop onFilesSelected={handleOnFilesSelected} />
+          <LogDragNDrop onFilesSelected={handleOnFilesSelected} />
         </div>
         <LogsToUploadTable />
       </div>

@@ -81,15 +81,8 @@ export async function GET() {
     orderBy: {
       createdAt: 'desc',
     },
-    select: {
-      id: true,
-      createdAt: true,
-      updatedAt: true,
-      createdBy: true,
-      name: true,
-      description: true,
-      photo: true,
-      isPrivate: true,
+    include: {
+      logs: true,
     },
   });
 
