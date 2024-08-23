@@ -12,6 +12,7 @@ type Props = {
   onClick?: () => void;
   variant?: 'primary' | 'secondary';
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+  active?: boolean;
 } & PropsWithChildren;
 
 type LinkProps = {
@@ -22,9 +23,11 @@ type LinkProps = {
   variant?: 'primary' | 'secondary';
   linkTo: string;
   type?: ButtonHTMLAttributes<HTMLButtonElement>['type'];
+  active?: boolean;
 } & PropsWithChildren;
 
 const Button: React.FC<Props | LinkProps> = ({
+  active,
   children,
   className = '',
   disabled = false,
@@ -50,6 +53,10 @@ const Button: React.FC<Props | LinkProps> = ({
       'text-buttonPrimaryText': variant === 'primary',
       'text-buttonSecondaryText': variant === 'secondary',
       'dark:text-darkButtonSecondaryText': variant === 'secondary',
+      'bg-buttonSecondaryBackgroundActive dark:bg-buttonSecondaryBackgroundActive':
+        variant === 'secondary' && active,
+      'bg-buttonPrimaryBackgroundActive dark:bg-buttonPrimaryBackgroundActive':
+        variant === 'primary' && active,
       'bg-buttonPrimaryBackground': variant === 'primary',
       'bg-buttonSecondaryBackground': variant === 'secondary',
       'dark:bg-darkButtonSecondaryBackground': variant === 'secondary',

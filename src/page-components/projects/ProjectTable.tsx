@@ -1,7 +1,10 @@
 import { format } from 'date-fns/format';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useMemo } from 'react';
 
+import { useFavoriteProject } from '@/api/mutations/favorites';
+import { useGetProjectFavorites } from '@/api/queries/favorites';
 import { useGetProjects } from '@/api/queries/projects';
 import { Checkbox } from '@/components/Checkbox';
 import { KebobButton } from '@/components/Icons/Buttons/KebobButton';
@@ -14,14 +17,23 @@ import { Table } from '@/components/Table/Table';
 import { BodyLargeBold } from '@/components/Typography/BodyLargeBold';
 import { BodyMedium } from '@/components/Typography/BodyMedium';
 import { useBulkProjectStore } from '@/store/bulkProjects';
+import { Folder } from '@/components/Icons/Folder';
 
 const ProjectTable: React.FC = () => {
   const { data } = useGetProjects();
+
+  const { data: favoriteData } = useGetProjectFavorites();
 
   const { clearSelected, selectAll, selectProject, selectedProjects } =
     useBulkProjectStore();
 
   const projects = data?.projects ?? [];
+
+  const favorites = favoriteData?.favoriteProjects ?? [];
+
+  const favoriteProject = useFavoriteProject();
+
+  const { push } = useRouter();
 
   const headerCheckboxState = useMemo(() => {
     if (selectedProjects.length === projects.length && projects.length > 0) {
@@ -54,11 +66,20 @@ const ProjectTable: React.FC = () => {
     }
   };
 
+  const handleOnClickFavorite = (projectId: string) =>
+    favoriteProject.mutateAsync({ projectId });
+
+  const handleRowOnClick = (projectId: string) =>
+    push(`/projects/${projectId}`);
+
   return (
     <Table>
       <Header>
         <HeaderCell className="w-[56px] items-center justify-center">
-          <Checkbox onChange={() => {}} state={headerCheckboxState} />
+          <Checkbox
+            onChange={handleHeaderCheckboxOnChange}
+            state={headerCheckboxState}
+          />
         </HeaderCell>
         <HeaderCell className="ml-4 w-[125px]" />
         <HeaderCell className="ml-6" expanding>
@@ -70,7 +91,7 @@ const ProjectTable: React.FC = () => {
         <HeaderCell className="w-[56px]" />
       </Header>
       {projects.map((project) => (
-        <Row key={project.id}>
+        <Row onClick={() => handleRowOnClick(project.id)} key={project.id}>
           <Cell className="w-[56px]">
             <Checkbox
               onChange={() => selectProject(project.id)}
@@ -92,6 +113,7 @@ const ProjectTable: React.FC = () => {
                 alt="Project Photo"
               />
             )}
+            {project.photo === null && <div className='w-[125px] h-[70px] bg-surfaceTertiary dark:bg-darkSurfaceTertiary rounded-lg items-center justify-center flex'><Folder /></div>}
           </Cell>
           <Cell className="ml-6" expanding textAlign="start">
             <div className="flex flex-col">
@@ -108,7 +130,12 @@ const ProjectTable: React.FC = () => {
             </BodyMedium>
           </Cell>
           <Cell className="w-[48px]">
-            <StarButton onClick={() => {}} isActive={false} />
+            <StarButton
+              onClick={() => handleOnClickFavorite(project.id)}
+              isActive={favorites.some(
+                (favorite) => favorite.projectId === project.id,
+              )}
+            />
           </Cell>
           <Cell className="w-[56px]">
             <KebobButton onClick={() => {}} />

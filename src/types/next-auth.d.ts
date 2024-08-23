@@ -30,6 +30,14 @@ interface PostFavoriteLogsRequest extends NextRequest {
   body: PostFavoriteLogsBody;
 }
 
+type PostFavoriteProjectsBody = {
+  projectId: string;
+};
+
+interface PostFavoriteProjectsRequest extends NextRequest {
+  body: PostFavoriteProjectsBody;
+}
+
 type ProjectPostBody = {
   name: string;
   description?: string;

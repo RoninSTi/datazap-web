@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 
-import type { PostFavoriteLogsBody } from '@/types/next-auth';
+import type {
+  PostFavoriteLogsBody,
+  PostFavoriteProjectsBody,
+} from '@/types/next-auth';
 
 type FavoriteLogResponse = {
   message: 'success';
@@ -28,6 +31,36 @@ export const useFavoriteLog = () => {
     mutationFn: ({ logId }: PostFavoriteLogsBody) => favoriteLog({ logId }),
     onSuccess: () => {
       client.invalidateQueries('logFavorites');
+    },
+  });
+};
+
+type FavoriteProjectResponse = {
+  message: 'success';
+};
+
+const favoriteProject = async ({
+  projectId,
+}: PostFavoriteProjectsBody): Promise<FavoriteProjectResponse> => {
+  const url = '/api/favorite/projects';
+
+  const { data } = await axios.post<FavoriteProjectResponse>(url, {
+    data: {
+      projectId,
+    },
+  });
+
+  return data;
+};
+
+export const useFavoriteProject = () => {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ projectId }: PostFavoriteProjectsBody) =>
+      favoriteProject({ projectId }),
+    onSuccess: () => {
+      client.invalidateQueries('projectFavorites');
     },
   });
 };

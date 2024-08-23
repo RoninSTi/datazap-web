@@ -49,6 +49,7 @@ model User {
   logs          Log[]
   projects      Project[]
   favoriteLogs  LogFavorite[]
+  favoriteProjects ProjectFavorite[]
 }
 
 model UserDetails {
@@ -107,4 +108,16 @@ model Project {
   photo     String?
   logs      Log[]
   isPrivate Boolean
+  favorite ProjectFavorite[]
+}
+
+model ProjectFavorite {
+  projectId String
+  favoritedBy String
+  createdAt DateTime @default(now())  
+
+  Project Project @relation(fields: [projectId], references: [id])
+  User User @relation(fields: [favoritedBy], references: [id])
+
+  @@id([projectId, favoritedBy])
 }

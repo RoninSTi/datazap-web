@@ -18,9 +18,14 @@ const StarButton: React.FC<Props> = ({ isActive, onClick }) => {
 
   const activeState = isActive && !isHover;
 
+  const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onClick(event);
+  };
+
   return (
     <IconButton
-      onClick={onClick}
+      onClick={handleOnClick}
       onMouseOver={() => setIsHover(true)}
       onMouseOut={() => setIsHover(false)}
     >
