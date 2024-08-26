@@ -7,7 +7,7 @@ import { Plus } from '@/components/Icons/Plus';
 import { PageHeader } from '@/components/PageHeader';
 import { ProtectedPage } from '@/components/ProtectedPage';
 import { CreateModal } from '@/page-components/projects/CreateModal';
-import { ProjectTable } from '@/page-components/projects/ProjectTable';
+import { ProjectTable } from '@/page-components/projects/ProjectTable/ProjectTable';
 
 const ProjectsPage: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);

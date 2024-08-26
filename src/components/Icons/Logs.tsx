@@ -1,8 +1,13 @@
-export const Logs: React.FC = () => (
+interface Props {
+  height?: number;
+  width?: number;
+}
+
+export const Logs: React.FC<Props> = ({ height = 19, width = 18 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="18"
-    height="19"
+    width={width}
+    height={height}
     viewBox="0 0 18 19"
     fill="none"
   >
