@@ -1,6 +1,6 @@
 import type { User } from '@prisma/client';
 import axios from 'axios';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 type UpdateUserParams = {
   username: string;
@@ -29,8 +29,13 @@ const updateUser = async ({
 };
 
 export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({ username, image, backgroundImage }: UpdateUserParams) =>
       updateUser({ username, image, backgroundImage }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['me']);
+    },
   });
 };

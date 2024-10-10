@@ -1,9 +1,14 @@
 import React from 'react';
 
-const Log: React.FC = () => (
+interface Props {
+  height?: number;
+  width?: number;
+}
+
+const Log: React.FC<Props> = ({ height = 30, width = 30 }) => (
   <svg
-    width="30"
-    height="30"
+    width={width}
+    height={height}
     viewBox="0 0 30 30"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

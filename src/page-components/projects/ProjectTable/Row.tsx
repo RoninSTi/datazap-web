@@ -4,7 +4,9 @@ import React from 'react';
 
 import { useFavoriteProject } from '@/api/mutations/favorites';
 import { useGetProjectFavorites } from '@/api/queries/favorites';
+import { useGetProjectLogs } from '@/api/queries/projectLogs';
 import { Checkbox } from '@/components/Checkbox';
+import { DropDownMenu } from '@/components/DropDownMenu/DropDownMenu';
 import { KebobButton } from '@/components/Icons/Buttons/KebobButton';
 import { StarButton } from '@/components/Icons/Buttons/StarButton';
 import { Folder } from '@/components/Icons/Folder';
@@ -13,16 +15,20 @@ import { Row as TableRow } from '@/components/Table/Row';
 import { BodyLargeBold } from '@/components/Typography/BodyLargeBold';
 import { BodyMedium } from '@/components/Typography/BodyMedium';
 import { useBulkProjectStore } from '@/store/bulkProjects';
-import type { Project } from '@/types/project';
+import { type Project } from '@/types/project';
 
 interface Props {
   project: Project;
 }
 
 const Row: React.FC<Props> = ({ project }) => {
+  const { data: projectLogData } = useGetProjectLogs({
+    projectId: project.id,
+  });
   const { data: favoriteData } = useGetProjectFavorites();
 
   const favorites = favoriteData?.favoriteProjects ?? [];
+  const projectLogs = projectLogData?.logs ?? [];
 
   const favoriteProject = useFavoriteProject();
   const { selectProject, selectedProjects } = useBulkProjectStore();
@@ -66,7 +72,7 @@ const Row: React.FC<Props> = ({ project }) => {
         </div>
       </Cell>
       <Cell className="w-[88px]" textAlign="start">
-        <BodyMedium variant="secondary">{project.logs.length}</BodyMedium>
+        <BodyMedium variant="secondary">{projectLogs.length}</BodyMedium>
       </Cell>
       <Cell className="w-[129px]">
         <BodyMedium variant="secondary">
@@ -82,7 +88,7 @@ const Row: React.FC<Props> = ({ project }) => {
         />
       </Cell>
       <Cell className="w-[56px]">
-        <KebobButton onClick={() => {}} />
+        <DropDownMenu MenuButton={KebobButton} />
       </Cell>
     </TableRow>
   );

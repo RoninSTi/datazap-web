@@ -11,7 +11,7 @@ type Props = {
 export const NavBarLink: React.FC<Props> = ({ icon, path, title }) => {
   const pathname = usePathname();
 
-  const isActive = pathname === path;
+  const isActive = pathname.startsWith(path);
 
   return (
     <Link
@@ -26,7 +26,7 @@ export const NavBarLink: React.FC<Props> = ({ icon, path, title }) => {
     >
       <div
         className={classNames({
-          'text-darkButtonBgPrimaryActive': pathname === path,
+          'text-darkButtonBgPrimaryActive': isActive,
         })}
       >
         {icon}

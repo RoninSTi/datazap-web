@@ -9,19 +9,6 @@ declare module 'next-auth' {
   }
 }
 
-type LogPostRequestBody = {
-  filename: string;
-  title: string;
-  notes?: string;
-  url: string;
-  projectId?: string;
-  size: number;
-};
-
-interface LogPostRequest extends NextRequest {
-  body: LogPostRequestBody[];
-}
-
 type PostFavoriteLogsBody = {
   logId: string;
 };

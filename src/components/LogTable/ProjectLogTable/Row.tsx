@@ -1,8 +1,10 @@
+import { MenuItem } from '@headlessui/react';
 import { format } from 'date-fns';
 import React from 'react';
 
 import { useFavoriteLog } from '@/api/mutations/favorites';
 import { Checkbox } from '@/components/Checkbox';
+import { DropDownMenu } from '@/components/DropDownMenu/DropDownMenu';
 import { KebobButton } from '@/components/Icons/Buttons/KebobButton';
 import { StarButton } from '@/components/Icons/Buttons/StarButton';
 import { Logs } from '@/components/Icons/Logs';
@@ -13,7 +15,6 @@ import type { StoredLog } from '@/types/log';
 
 import { Cell } from '../../Table/Cell';
 import { Row as TableRow } from '../../Table/Row';
-import { DropDownMenu } from '@/components/DropDownMenu/DropDownMenu';
 
 type Props = {
   isFavorite: boolean;
@@ -22,7 +23,7 @@ type Props = {
 };
 
 const Row: React.FC<Props> = ({ isFavorite, isSelected, log }) => {
-  const { id, title, notes, project, createdAt } = log;
+  const { id, title, notes, createdAt } = log;
 
   const favoriteLog = useFavoriteLog();
 
@@ -57,9 +58,6 @@ const Row: React.FC<Props> = ({ isFavorite, isSelected, log }) => {
       <Cell expanding textAlign="start">
         <BodyMedium variant="secondary">{notes}</BodyMedium>
       </Cell>
-      <Cell className="w-[185px]" textAlign="start">
-        <BodyMediumBold>{project?.name}</BodyMediumBold>
-      </Cell>
       <Cell className="w-[139px]" textAlign="start">
         <BodyMedium variant="secondary">
           {format(new Date(createdAt), 'yyyy-MM-dd')}
@@ -69,7 +67,14 @@ const Row: React.FC<Props> = ({ isFavorite, isSelected, log }) => {
         <StarButton onClick={handleOnClickStar} isActive={isFavorite} />
       </Cell>
       <Cell className="w-[56px]">
-        <DropDownMenu MenuButton={KebobButton} />
+        <DropDownMenu MenuButton={KebobButton}>
+          <MenuItem>
+            <div>hi</div>
+          </MenuItem>
+          <MenuItem>
+            <div>there</div>
+          </MenuItem>
+        </DropDownMenu>
       </Cell>
     </TableRow>
   );

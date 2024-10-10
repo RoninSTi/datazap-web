@@ -1,11 +1,14 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
+import { z } from 'zod';
 
-import type { StoredLog } from '@/types/log';
+import { StoredLogSchema } from '@/types/log';
 
-type LogResponse = {
-  logs: StoredLog[];
-};
+const LogResponseSchema = z.object({
+  logs: StoredLogSchema.array(),
+});
+
+type LogResponse = z.infer<typeof LogResponseSchema>;
 
 export const getLogs = async () => {
   const url = '/api/logs';

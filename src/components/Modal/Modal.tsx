@@ -16,6 +16,13 @@ const Modal: React.FC<PropsWithChildren<Props>> = ({
   onClose,
   show,
 }) => {
+  const handleOnKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+
+    event.preventDefault();
+    onClose();
+  };
+
   return (
     <>
       <div
@@ -26,7 +33,9 @@ const Modal: React.FC<PropsWithChildren<Props>> = ({
           },
         )}
         onClick={onClose}
-        role="dialog"
+        onKeyDown={handleOnKeyDown}
+        role="button"
+        tabIndex={0}
       />
       <div
         className={classNames(

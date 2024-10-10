@@ -15,15 +15,11 @@ const Cell: React.FC<PropsWithChildren<Props>> = ({
   textAlign = 'center',
 }) => (
   <div
-    className={classNames(
-      'flex items-center',
-      {
-        'flex-1': expanding,
-        'justify-center': textAlign === 'center',
-        'justify-start': textAlign === 'start',
-      },
-      className,
-    )}
+    className={classNames(className, 'flex items-center', {
+      'flex-1': expanding,
+      'justify-center': textAlign === 'center',
+      'justify-start': textAlign === 'start',
+    })}
   >
     {children}
   </div>

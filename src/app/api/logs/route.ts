@@ -1,11 +1,23 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { z } from 'zod';
 
 import { authOptions } from '@/config/auth';
 import prisma from '@/database/client';
-import type { LogPostRequest, LogPostRequestBody } from '@/types/next-auth';
 
-export async function POST(request: LogPostRequest) {
+export const LogPostRequestSchema = z
+  .object({
+    filename: z.string(),
+    title: z.string(),
+    notes: z.string().optional(),
+    url: z.string(),
+    projectId: z.string().optional(),
+    size: z.number(),
+  })
+  .array();
+
+export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session)
@@ -30,16 +42,45 @@ export async function POST(request: LogPostRequest) {
       },
     );
 
-  const body: { data: LogPostRequestBody[] } = await request.json();
+  const body = await request.json();
 
-  const logs = body.data;
+  const parsedBody = LogPostRequestSchema.safeParse(body);
+
+  if (parsedBody.success === false) {
+    NextResponse.json({
+      message: 'Bad Request',
+      error: parsedBody.error,
+      status: 400,
+    });
+  }
+
+  const logCount = await prisma.log.count({
+    where: {
+      createdBy: userId,
+    },
+  });
+
+  const userDetails = await prisma.userDetails.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  const logLimit = userDetails?.logLimit ?? 0;
+
+  if (logCount >= logLimit) {
+    NextResponse.json({
+      error: 'Limit Exceeded',
+      status: 403,
+    });
+  }
 
   await prisma.log.createMany({
-    data: logs.map((log) => ({ ...log, createdBy: userId })),
+    data: parsedBody.data?.map((log) => ({ ...log, createdBy: userId })) ?? [],
   });
 
   return NextResponse.json({
-    status: 200,
+    status: 201,
   });
 }
 

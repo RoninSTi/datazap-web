@@ -30,6 +30,27 @@ export async function POST(request: ProjectPostRequest) {
       },
     );
 
+  const projectCount = await prisma.project.count({
+    where: {
+      createdBy: userId,
+    },
+  });
+
+  const userDetails = await prisma.userDetails.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  const projectLimit = userDetails?.projectLimit ?? 0;
+
+  if (projectCount >= projectLimit) {
+    NextResponse.json({
+      error: 'Limit Exceeded',
+      status: 403,
+    });
+  }
+
   const body: { data: ProjectPostBody } = await request.json();
 
   const project = body.data;
@@ -80,9 +101,6 @@ export async function GET() {
     },
     orderBy: {
       createdAt: 'desc',
-    },
-    include: {
-      logs: true,
     },
   });
 

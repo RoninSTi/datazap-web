@@ -1,49 +1,24 @@
-import React, { type PropsWithChildren } from 'react';
+import { Checkbox as HUICheckBox } from '@headlessui/react';
+import { CheckIcon, MinusIcon } from '@heroicons/react/20/solid';
+import React from 'react';
 
 type Props = {
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: boolean) => void;
   state: 'default' | 'checked' | 'disabled' | 'indeterminate';
 };
 
-const Checkbox: React.FC<PropsWithChildren<Props>> = ({
-  children,
-  onChange,
-  state,
-}) => {
-  const defaultChecked = (): boolean => {
-    switch (state) {
-      case 'default':
-      case 'disabled':
-      case 'indeterminate':
-        return false;
-      case 'checked':
-        return true;
-      default:
-        return false;
-    }
-  };
-
+const Checkbox: React.FC<Props> = ({ onChange, state }) => {
   return (
-    <div>
-      <label htmlFor="custom-checkbox">
-        <input
-          ref={(input) => {
-            if (input) {
-              // eslint-disable-next-line no-param-reassign
-              input.indeterminate = state === 'indeterminate';
-            }
-          }}
-          className="form-checkbox text-buttonPrimaryBackground focus:shadow-none focus:outline-none focus:ring-0 focus:ring-offset-0 dark:text-darkButtonBgPrimaryActive"
-          checked={defaultChecked()}
-          onChange={onChange}
-          id="custom-checkbox"
-          name="custom-checkbox"
-          type="checkbox"
-          value="custom-checkbox"
-        />
-        {children}
-      </label>
-    </div>
+    <HUICheckBox
+      checked={state === 'checked'}
+      className="group size-4 rounded-sm ring-2 ring-textMain hover:ring-buttonPrimaryBackgroundHover data-[checked]:bg-buttonPrimaryBackgroundActive data-[indeterminate]:bg-buttonPrimaryBackgroundActive data-[checked]:ring-buttonPrimaryBackgroundActive data-[disabled]:ring-textPlaceholder data-[indeterminate]:ring-buttonPrimaryBackgroundActive dark:ring-darkTextMain dark:data-[disabled]:ring-darkTextPlaceholder"
+      disabled={state === 'disabled'}
+      indeterminate={state === 'indeterminate'}
+      onChange={onChange}
+    >
+      <CheckIcon className="hidden text-black group-data-[checked]:block" />
+      <MinusIcon className="hidden text-black group-data-[indeterminate]:block" />
+    </HUICheckBox>
   );
 };
 

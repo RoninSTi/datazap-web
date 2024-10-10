@@ -1,18 +1,20 @@
-import axios from 'axios';
 import { useQuery } from 'react-query';
+import { z } from 'zod';
 
-import type { Project } from '@/types/project';
+import { ProjectSchema } from '@/types/project';
 
-type ProjectResponse = {
-  projects: Project[];
-};
+const ProjectResponseSchema = z.object({
+  projects: ProjectSchema.array(),
+});
 
 export const getProjects = async () => {
   const url = '/api/projects';
 
-  const { data } = await axios.get<ProjectResponse>(url);
+  const response = await (await fetch(url)).json();
 
-  return data;
+  const parsedData = ProjectResponseSchema.parse(response);
+
+  return parsedData;
 };
 
 export const useGetProjects = () => {

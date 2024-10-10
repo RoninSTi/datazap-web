@@ -29,7 +29,7 @@ export type Props = {
 const sizeMap: { [key in InputSize]: string } = {
   medium: 'p-3 text-base',
   large: 'p-4 text-base',
-  small: 'p-2 text-base',
+  small: 'px-4 py-2 text-sm',
 };
 
 export const Input: FC<Props> = forwardRef<HTMLInputElement, Props>(
@@ -55,7 +55,7 @@ export const Input: FC<Props> = forwardRef<HTMLInputElement, Props>(
         aria-label={label}
         placeholder={placeholder}
         className={classNames([
-          'relative inline-flex w-full leading-none transition-colors ease-in-out mt-1 rounded-md border-1 border-solid border-surfacePrimary bg-inputBackground dark:border-darkSurfacePrimary dark:bg-darkInputBackground focus:outline-none',
+          'relative inline-flex w-full leading-none transition-colors ease-in-out rounded-md border-1 border-solid border-surfacePrimary bg-inputBackground dark:border-darkSurfacePrimary dark:bg-darkInputBackground focus:outline-none',
           sizeMap[size],
           className,
         ])}

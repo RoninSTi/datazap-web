@@ -1,14 +1,15 @@
 import type { PropsWithChildren } from 'react';
 
 import { Header } from '@/components/Header';
-import { NavBar } from '@/components/NavBar';
+import { NavBarLayout } from '@/components/NavBarLayout';
 
-const DashboardLayout: React.FC<PropsWithChildren<unknown>> = ({ children }) => (
-  <div className="bg-surfacePrimary dark:bg-darkSurfacePrimary">
-    <NavBar />
+const DashboardLayout: React.FC<PropsWithChildren<unknown>> = ({
+  children,
+}) => (
+  <NavBarLayout>
     <Header />
     {children}
-  </div>
+  </NavBarLayout>
 );
 
 export default DashboardLayout;

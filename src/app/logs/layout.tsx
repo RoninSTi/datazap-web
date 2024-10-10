@@ -1,12 +1,9 @@
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from "react";
 
-import { NavBar } from '@/components/NavBar';
+import { NavBarLayout } from "@/components/NavBarLayout";
 
 const LogsLayout: React.FC<PropsWithChildren<unknown>> = ({ children }) => (
-  <div className="h-full bg-surfacePrimary dark:bg-darkSurfacePrimary">
-    <NavBar />
-    {children}
-  </div>
+  <NavBarLayout>{children}</NavBarLayout>
 );
 
 export default LogsLayout;

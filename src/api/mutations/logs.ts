@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
+import type { z } from 'zod';
 
-import type { LogPostRequestBody } from '@/types/next-auth';
+import type { LogPostRequestSchema } from '@/app/api/logs/route';
 
 type AddLogResponse = {
   message: 'success';
 };
 
 type AddLogsParams = {
-  logs: LogPostRequestBody[];
+  logs: z.infer<typeof LogPostRequestSchema>;
 };
 
 const addLogs = async ({ logs }: AddLogsParams): Promise<AddLogResponse> => {
@@ -22,7 +23,12 @@ const addLogs = async ({ logs }: AddLogsParams): Promise<AddLogResponse> => {
 };
 
 export const useAddLogs = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({ logs }: AddLogsParams) => addLogs({ logs }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['projects', 'logs', 'projectLogs']);
+    },
   });
 };

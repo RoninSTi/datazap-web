@@ -32,7 +32,7 @@ export const useCheckUsername = ({ username }: { username: string }) => {
   );
 };
 
-type MeResponse = {
+export type MeResponse = {
   user: ExtendedUser;
 };
 

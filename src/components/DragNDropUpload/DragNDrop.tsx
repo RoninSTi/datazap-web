@@ -53,7 +53,7 @@ const DragNdrop: React.FC<PropsWithChildren<Props | SingleProps>> = ({
       onFilesSelected(files[0]);
     }
 
-    if (files.length > 1 && !singleFile) {
+    if (files.length > 0 && !singleFile) {
       onFilesSelected(files);
     }
 

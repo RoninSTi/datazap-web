@@ -5,6 +5,13 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/config/auth';
 import prisma from '@/database/client';
 
+const TIERS = {
+  FREE: {
+    logLimit: 50,
+    projectLimit: 5,
+  },
+};
+
 export async function PUT(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
@@ -48,6 +55,8 @@ export async function PUT(request: NextRequest) {
         backgroundImage,
         username,
         userId: session.userId,
+        projectLimit: TIERS.FREE.projectLimit,
+        logLimit: TIERS.FREE.logLimit,
       },
     }),
   );

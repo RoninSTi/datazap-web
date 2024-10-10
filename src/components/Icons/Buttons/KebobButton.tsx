@@ -1,3 +1,4 @@
+import { MenuButton } from '@headlessui/react';
 import React, { useState } from 'react';
 
 import { IconButton } from '@/components/IconButton';
@@ -5,24 +6,21 @@ import { IconButton } from '@/components/IconButton';
 import { KebobDefault } from '../KebobDefault';
 import { KebobHover } from '../KebobHover';
 
-type Props = {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-};
-
-const KebobButton: React.FC<Props> = ({ onClick }) => {
+const KebobButton: React.FC = () => {
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const defaultState = !isHover;
 
   return (
-    <IconButton
-      onClick={onClick}
-      onMouseOver={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
-    >
-      {defaultState && <KebobDefault />}
-      {isHover && <KebobHover />}
-    </IconButton>
+    <MenuButton className="flex">
+      <div
+        onMouseOver={() => setIsHover(true)}
+        onMouseOut={() => setIsHover(false)}
+      >
+        {defaultState && <KebobDefault />}
+        {isHover && <KebobHover />}
+      </div>
+    </MenuButton>
   );
 };
 

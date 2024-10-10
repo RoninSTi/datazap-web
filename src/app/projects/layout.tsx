@@ -1,12 +1,9 @@
 import type { PropsWithChildren } from "react";
 
-import { NavBar } from "@/components/NavBar";
+import { NavBarLayout } from "@/components/NavBarLayout";
 
 const ProjectsLayout: React.FC<PropsWithChildren<unknown>> = ({ children }) => (
-  <div className="bg-surfacePrimary dark:bg-darkSurfacePrimary flex flex-col h-screen">
-    <NavBar />
-    {children}
-  </div>
+  <NavBarLayout>{children}</NavBarLayout>
 );
 
 export default ProjectsLayout;

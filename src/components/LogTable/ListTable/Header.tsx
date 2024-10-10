@@ -25,9 +25,7 @@ const Header: React.FC = () => {
     return 'default';
   }, [logs.length, selectedLogs.length]);
 
-  const handleCheckboxOnChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleCheckboxOnChange = (_value: boolean) => {
     switch (checkboxState) {
       case 'checked':
       case 'indeterminate':
@@ -48,8 +46,8 @@ const Header: React.FC = () => {
       </div>
       <HeaderCell expanding>Name</HeaderCell>
       <HeaderCell expanding>Notes</HeaderCell>
-      <HeaderCell className="w-[185px] pl-5">Project</HeaderCell>
-      <HeaderCell className="w-[139px] pl-6">Added</HeaderCell>
+      <HeaderCell className="w-[185px]">Project</HeaderCell>
+      <HeaderCell className="w-[139px]">Added</HeaderCell>
       <HeaderCell className="w-[48px]" />
       <HeaderCell className="w-[56px]" />
     </TableHeader>
