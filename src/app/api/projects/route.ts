@@ -45,10 +45,14 @@ export async function POST(request: ProjectPostRequest) {
   const projectLimit = userDetails?.projectLimit ?? 0;
 
   if (projectCount >= projectLimit) {
-    NextResponse.json({
-      error: 'Limit Exceeded',
-      status: 403,
-    });
+    NextResponse.json(
+      {
+        error: 'Limit Exceeded',
+      },
+      {
+        status: 403,
+      },
+    );
   }
 
   const body: { data: ProjectPostBody } = await request.json();

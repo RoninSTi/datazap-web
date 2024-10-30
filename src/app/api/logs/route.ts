@@ -47,11 +47,14 @@ export async function POST(request: NextRequest) {
   const parsedBody = LogPostRequestSchema.safeParse(body);
 
   if (parsedBody.success === false) {
-    NextResponse.json({
-      message: 'Bad Request',
-      error: parsedBody.error,
-      status: 400,
-    });
+    NextResponse.json(
+      {
+        error: parsedBody.error,
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   const logCount = await prisma.log.count({
@@ -69,10 +72,14 @@ export async function POST(request: NextRequest) {
   const logLimit = userDetails?.logLimit ?? 0;
 
   if (logCount >= logLimit) {
-    NextResponse.json({
-      error: 'Limit Exceeded',
-      status: 403,
-    });
+    NextResponse.json(
+      {
+        error: 'Limit Exceeded',
+      },
+      {
+        status: 403,
+      },
+    );
   }
 
   await prisma.log.createMany({

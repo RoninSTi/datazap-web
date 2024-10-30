@@ -14,16 +14,17 @@ export const LogsDashboardCard: React.FC = () => {
 
   return (
     <DashboardCard
+      className="mr-6"
       icon={<Logs />}
       title="Logs"
       subtitle="Quickly upload, analyze, and share your data logs."
       actions={
         <ActionContainer>
-          <Button onClick={handleOnClickUpload}>
+          <Button className="whitespace-nowrap" onClick={handleOnClickUpload}>
             <Upload />
             Upload Log
           </Button>
-          <Button variant="secondary">
+          <Button className="whitespace-nowrap" variant="secondary">
             View All
             <ChevronRight />
           </Button>

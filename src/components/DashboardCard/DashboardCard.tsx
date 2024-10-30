@@ -1,4 +1,7 @@
+import classNames from 'classnames';
+
 type Props = {
+  className?: string;
   icon: JSX.Element;
   title: string;
   subtitle: string;
@@ -7,12 +10,18 @@ type Props = {
 
 export const DashboardCard: React.FC<Props> = ({
   actions,
+  className,
   icon,
   subtitle,
   title,
 }) => {
   return (
-    <div className="flex-1 rounded-lg border-l-4 border-s-buttonPrimaryBackground bg-surfaceTertiary px-10 py-6 dark:bg-darkSurfaceTertiary">
+    <div
+      className={classNames(
+        'flex-1 rounded-lg border-l-4 border-s-buttonPrimaryBackground bg-surfaceTertiary px-10 py-6 dark:bg-darkSurfaceTertiary',
+        className,
+      )}
+    >
       <div className="mb-6">
         <div className="mb-2 flex flex-row items-center">
           <div className="mr-3 text-textPlaceholder dark:text-darkTextPlaceholder">

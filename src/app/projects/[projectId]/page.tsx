@@ -18,9 +18,9 @@ import { PageHeader } from '@/components/PageHeader';
 import { ProtectedPage } from '@/components/ProtectedPage';
 import { BodyMedium } from '@/components/Typography/BodyMedium';
 import { LabelUppercaseSmall } from '@/components/Typography/LabelUppercaseSmall';
+import { UploadLogModal } from '@/components/UploadLogModal/UploadLogModal';
 import { useProjectDetailDisplay } from '@/hooks/useProjectDetailDisplay';
 import { PageTitle } from '@/page-components/projects/[projectId]/PageTitle';
-import { UploadLogModal } from '@/components/UploadLogModal/UploadLogModal';
 
 const ProjectDetailPage: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
