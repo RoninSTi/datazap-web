@@ -1,8 +1,19 @@
-import type { PropsWithChildren } from "react";
-import React from "react";
+import type { PropsWithChildren } from 'react';
+import React from 'react';
 
-const Table: React.FC<PropsWithChildren<unknown>> = ({ children }) => (
-  <div className="flex flex-col h-full flex-1">{children}</div>
+interface TableProps {
+  className?: string;
+  ariaLabel?: string;
+}
+
+const Table: React.FC<PropsWithChildren<TableProps>> = ({
+  children,
+  className = '',
+  ariaLabel = 'Data table',
+}) => (
+  <div className={`flex h-full flex-1 flex-col ${className}`} role="table" aria-label={ariaLabel}>
+    {children}
+  </div>
 );
 
 export { Table };

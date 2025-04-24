@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useGetProjects } from '@/api/queries/projects';
-import { Table } from '@/components/Table/Table';
+import { Table, Body } from '@/components/Table';
 
 import { Header } from './Header';
 import { Row } from './Row';
@@ -12,11 +12,13 @@ const ProjectTable: React.FC = () => {
   const projects = data?.projects ?? [];
 
   return (
-    <Table>
+    <Table ariaLabel="Projects Table">
       <Header projects={projects} />
-      {projects.map((project) => (
-        <Row key={project.id} project={project} />
-      ))}
+      <Body emptyState={<div className="p-8 text-center">No projects found</div>}>
+        {projects.map((project) => (
+          <Row key={project.id} project={project} />
+        ))}
+      </Body>
     </Table>
   );
 };

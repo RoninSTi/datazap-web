@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Checkbox } from '@/components/Checkbox';
-import { Header as TableHeader } from '@/components/Table/Header';
-import { HeaderCell } from '@/components/Table/HeaderCell';
+import { Header as TableHeader, HeaderCell } from '@/components/Table';
 import { useBulkLogStore } from '@/store/bulkLogs';
 import type { StoredLog } from '@/types/log';
 
@@ -40,15 +39,15 @@ const Header: React.FC<Props> = ({ logs }) => {
   };
 
   return (
-    <TableHeader>
-      <div className="flex pr-4">
+    <TableHeader sticky>
+      <HeaderCell width="w-[56px]" textAlign="center">
         <Checkbox state={checkboxState} onChange={handleCheckboxOnChange} />
-      </div>
+      </HeaderCell>
       <HeaderCell expanding>Log Name</HeaderCell>
       <HeaderCell expanding>Notes</HeaderCell>
-      <HeaderCell className="w-[139px]">Added</HeaderCell>
-      <HeaderCell className="w-[48px]" />
-      <HeaderCell className="w-[56px]" />
+      <HeaderCell width="w-[139px]">Added</HeaderCell>
+      <HeaderCell width="w-[48px]" />
+      <HeaderCell width="w-[56px]" />
     </TableHeader>
   );
 };

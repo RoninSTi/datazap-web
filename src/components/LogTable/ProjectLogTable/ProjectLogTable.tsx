@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useGetLogFavorites } from '@/api/queries/favorites';
 import { useGetProjectLogs } from '@/api/queries/projectLogs';
-import { Table } from '@/components/Table/Table';
+import { Table, Body } from '@/components/Table';
 import { useBulkLogStore } from '@/store/bulkLogs';
 import type { Project } from '@/types/project';
 
@@ -33,11 +33,10 @@ const ProjectLogTable: React.FC<Props> = ({ onShowModal, project }) => {
   }, [clearSelected]);
 
   return (
-    <Table>
+    <Table ariaLabel="Project Logs">
       <Header logs={logs} />
-      {logs.length === 0 && <Empty onClickUpload={onShowModal} />}
-      {logs.length > 0 &&
-        logs.map((log) => (
+      <Body emptyState={<Empty onClickUpload={onShowModal} />}>
+        {logs.map((log) => (
           <Row
             key={log.id}
             isFavorite={
@@ -47,6 +46,7 @@ const ProjectLogTable: React.FC<Props> = ({ onShowModal, project }) => {
             log={log}
           />
         ))}
+      </Body>
     </Table>
   );
 };

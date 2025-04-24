@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Checkbox } from '@/components/Checkbox';
-import { Header as TableHeader } from '@/components/Table/Header';
-import { HeaderCell } from '@/components/Table/HeaderCell';
+import { Header as TableHeader, HeaderCell } from '@/components/Table';
 import { useBulkProjectStore } from '@/store/bulkProjects';
 import type { Project } from '@/types/project';
 
@@ -45,18 +44,22 @@ const Header: React.FC<Props> = ({ projects }) => {
   };
 
   return (
-    <TableHeader>
-      <HeaderCell className="w-[56px] items-center justify-center">
+    <TableHeader sticky>
+      <HeaderCell width="w-[56px]" textAlign="center">
         <Checkbox onChange={handleCheckboxOnChange} state={checkboxState} />
       </HeaderCell>
-      <HeaderCell className="ml-4 w-[125px]" />
-      <HeaderCell className="ml-6" expanding>
+      <HeaderCell width="w-[125px]" className="ml-4" />
+      <HeaderCell expanding className="ml-6" textAlign="start">
         Name
       </HeaderCell>
-      <HeaderCell className="w-[88px]">Logs</HeaderCell>
-      <HeaderCell className="w-[129px] pl-6">Added</HeaderCell>
-      <HeaderCell className="w-[48px]" />
-      <HeaderCell className="w-[56px]" />
+      <HeaderCell width="w-[88px]" textAlign="start">
+        Logs
+      </HeaderCell>
+      <HeaderCell width="w-[129px]" className="pl-6">
+        Added
+      </HeaderCell>
+      <HeaderCell width="w-[48px]" />
+      <HeaderCell width="w-[56px]" />
     </TableHeader>
   );
 };

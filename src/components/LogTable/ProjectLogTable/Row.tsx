@@ -8,13 +8,11 @@ import { DropDownMenu } from '@/components/DropDownMenu/DropDownMenu';
 import { KebobButton } from '@/components/Icons/Buttons/KebobButton';
 import { StarButton } from '@/components/Icons/Buttons/StarButton';
 import { Logs } from '@/components/Icons/Logs';
+import { Cell, Row as TableRow } from '@/components/Table';
 import { BodyMedium } from '@/components/Typography/BodyMedium';
 import { BodyMediumBold } from '@/components/Typography/BodyMediumBold';
 import { useBulkLogStore } from '@/store/bulkLogs';
 import type { StoredLog } from '@/types/log';
-
-import { Cell } from '../../Table/Cell';
-import { Row as TableRow } from '../../Table/Row';
 
 type Props = {
   isFavorite: boolean;
@@ -37,18 +35,15 @@ const Row: React.FC<Props> = ({ isFavorite, isSelected, log }) => {
     await favoriteLog.mutateAsync({ logId: id });
   };
 
-  const checkBoxState = (): 'checked' | 'default' =>
-    isSelected ? 'checked' : 'default';
-
   const handleCheckboxOnChange = (_value: boolean) => {
     selectLog(id);
   };
 
   return (
-    <TableRow>
-      <div className="mr-4 flex items-center">
-        <Checkbox onChange={handleCheckboxOnChange} state={checkBoxState()} />
-      </div>
+    <TableRow selected={isSelected}>
+      <Cell width="w-[56px]" textAlign="center">
+        <Checkbox onChange={handleCheckboxOnChange} state={isSelected ? 'checked' : 'default'} />
+      </Cell>
       <Cell expanding textAlign="start">
         <div className="mr-4 text-textPlaceholder dark:text-darkTextPlaceholder">
           <Logs />
@@ -58,15 +53,15 @@ const Row: React.FC<Props> = ({ isFavorite, isSelected, log }) => {
       <Cell expanding textAlign="start">
         <BodyMedium variant="secondary">{notes}</BodyMedium>
       </Cell>
-      <Cell className="w-[139px]" textAlign="start">
+      <Cell width="w-[139px]" textAlign="start">
         <BodyMedium variant="secondary">
           {format(new Date(createdAt), 'yyyy-MM-dd')}
         </BodyMedium>
       </Cell>
-      <Cell className="w-[48px]">
+      <Cell width="w-[48px]">
         <StarButton onClick={handleOnClickStar} isActive={isFavorite} />
       </Cell>
-      <Cell className="w-[56px]">
+      <Cell width="w-[56px]">
         <DropDownMenu MenuButton={KebobButton}>
           <MenuItem>
             <div>hi</div>

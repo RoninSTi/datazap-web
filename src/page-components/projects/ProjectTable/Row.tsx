@@ -10,8 +10,7 @@ import { DropDownMenu } from '@/components/DropDownMenu/DropDownMenu';
 import { KebobButton } from '@/components/Icons/Buttons/KebobButton';
 import { StarButton } from '@/components/Icons/Buttons/StarButton';
 import { Folder } from '@/components/Icons/Folder';
-import { Cell } from '@/components/Table/Cell';
-import { Row as TableRow } from '@/components/Table/Row';
+import { Cell, Row as TableRow } from '@/components/Table';
 import { BodyLargeBold } from '@/components/Typography/BodyLargeBold';
 import { BodyMedium } from '@/components/Typography/BodyMedium';
 import { useBulkProjectStore } from '@/store/bulkProjects';
@@ -36,20 +35,22 @@ const Row: React.FC<Props> = ({ project }) => {
   const handleOnClickFavorite = () =>
     favoriteProject.mutateAsync({ projectId: project.id });
 
+  const isSelected = selectedProjects.some((el) => el === project.id);
+
   return (
-    <TableRow path={`/projects/${project.id}`} key={project.id}>
-      <Cell className="w-[56px]">
+    <TableRow 
+      path={`/projects/${project.id}`} 
+      key={project.id}
+      selected={isSelected}
+    >
+      <Cell width="w-[56px]" textAlign="center">
         <Checkbox
           onChange={() => selectProject(project.id)}
-          state={
-            selectedProjects.some((el) => el === project.id)
-              ? 'checked'
-              : 'default'
-          }
+          state={isSelected ? 'checked' : 'default'}
         />
       </Cell>
-      <Cell className="ml-4">
-        {project.photo && (
+      <Cell width="w-[125px]" className="ml-4">
+        {project.photo ? (
           <Image
             className="rounded-lg"
             priority
@@ -58,28 +59,27 @@ const Row: React.FC<Props> = ({ project }) => {
             width={125}
             alt="Project Photo"
           />
-        )}
-        {project.photo === null && (
+        ) : (
           <div className="flex h-[70px] w-[125px] items-center justify-center rounded-lg bg-surfaceTertiary dark:bg-darkSurfaceTertiary">
             <Folder />
           </div>
         )}
       </Cell>
-      <Cell className="ml-6" expanding textAlign="start">
+      <Cell expanding className="ml-6" textAlign="start">
         <div className="flex flex-col">
           <BodyLargeBold variant="main">{project.name}</BodyLargeBold>
           <BodyMedium variant="secondary">{project.description}</BodyMedium>
         </div>
       </Cell>
-      <Cell className="w-[88px]" textAlign="start">
+      <Cell width="w-[88px]" textAlign="start">
         <BodyMedium variant="secondary">{projectLogs.length}</BodyMedium>
       </Cell>
-      <Cell className="w-[129px]">
+      <Cell width="w-[129px]">
         <BodyMedium variant="secondary">
           {format(new Date(project.createdAt), 'yyyy-MM-dd')}
         </BodyMedium>
       </Cell>
-      <Cell className="w-[48px]">
+      <Cell width="w-[48px]">
         <StarButton
           onClick={handleOnClickFavorite}
           isActive={favorites.some(
@@ -87,7 +87,7 @@ const Row: React.FC<Props> = ({ project }) => {
           )}
         />
       </Cell>
-      <Cell className="w-[56px]">
+      <Cell width="w-[56px]">
         <DropDownMenu MenuButton={KebobButton} />
       </Cell>
     </TableRow>
