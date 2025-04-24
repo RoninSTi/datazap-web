@@ -1,100 +1,35 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import type { z } from 'zod';
 
-import { authOptions } from '@/config/auth';
 import prisma from '@/database/client';
-import type {
-  PostFavoriteProjectsBody,
-  PostFavoriteProjectsRequest,
-} from '@/types/next-auth';
+import { getUserId, ensureUserId } from '@/utils/auth';
+import { withValidation } from '@/utils/validation';
+import { FavoriteProjectSchema } from '../schemas';
+import { toggleProjectFavorite } from '../utils';
 
-export async function POST(request: PostFavoriteProjectsRequest) {
-  const session = await getServerSession(authOptions);
+// POST handler with validation middleware
+export const POST = withValidation(
+  FavoriteProjectSchema,
+  async (
+    request: NextRequest, 
+    validatedData: z.infer<typeof FavoriteProjectSchema>
+  ) => {
+    // Get userId from request headers (set by middleware)
+    const userId = getUserId(request);
+    ensureUserId(userId);
 
-  if (!session)
-    return NextResponse.json(
-      {
-        error: 'You must be logged in.',
-      },
-      {
-        status: 401,
-      },
-    );
-
-  const userId = session.userDetails?.userId;
-
-  if (!userId)
-    return NextResponse.json(
-      {
-        error: 'User not found.',
-      },
-      {
-        status: 404,
-      },
-    );
-
-  const body: { data: PostFavoriteProjectsBody } = await request.json();
-
-  const { projectId } = body.data;
-
-  const isExisting = await prisma.projectFavorite.findFirst({
-    where: {
-      favoritedBy: userId,
-      projectId,
-    },
-  });
-
-  if (isExisting !== null) {
-    await prisma.projectFavorite.delete({
-      where: {
-        projectId_favoritedBy: {
-          projectId,
-          favoritedBy: userId,
-        },
-      },
-    });
-
-    return NextResponse.json({
-      status: 200,
-    });
+    const { projectId } = validatedData.data;
+    
+    // Use the utility function to toggle the favorite
+    return toggleProjectFavorite(userId, projectId);
   }
+);
 
-  await prisma.projectFavorite.create({
-    data: {
-      favoritedBy: userId,
-      projectId,
-    },
-  });
-
-  return NextResponse.json({
-    status: 200,
-  });
-}
-
-export async function GET() {
-  const session = await getServerSession(authOptions);
-
-  if (!session)
-    return NextResponse.json(
-      {
-        error: 'You must be logged in.',
-      },
-      {
-        status: 401,
-      },
-    );
-
-  const userId = session.userDetails?.userId;
-
-  if (!userId)
-    return NextResponse.json(
-      {
-        error: 'User not found.',
-      },
-      {
-        status: 404,
-      },
-    );
+export async function GET(request: NextRequest) {
+  // Get userId from request headers (set by middleware)
+  const userId = getUserId(request);
+  ensureUserId(userId);
 
   const favoriteProjects = await prisma.projectFavorite.findMany({
     where: {

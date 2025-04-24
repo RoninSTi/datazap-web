@@ -1,46 +1,56 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { z } from 'zod';
 
-import { authOptions } from '@/config/auth';
 import prisma from '@/database/client';
+import { ensureUserId, getUserId } from '@/utils/auth';
 
-export async function GET(request: NextRequest, { params }: any) {
-  const session = await getServerSession(authOptions);
+// Create a parameter validation schema
+export const ProjectIdParamSchema = z.object({
+  projectId: z.string({
+    required_error: 'Project ID is required',
+    invalid_type_error: 'Project ID must be a string',
+  }),
+});
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: z.infer<typeof ProjectIdParamSchema> },
+) {
+  // Validate the projectId
+  const result = ProjectIdParamSchema.safeParse(params);
+  if (!result.success) {
+    return NextResponse.json(
+      {
+        error: 'Invalid project ID',
+        details: result.error.format(),
+      },
+      { status: 400 },
+    );
+  }
 
   const { projectId } = params;
 
-  if (projectId === undefined || Array.isArray(projectId))
+  // Get userId from request headers (set by middleware)
+  const userId = getUserId(request);
+  ensureUserId(userId);
+
+  // First check if the project exists and belongs to the user
+  const project = await prisma.project.findFirst({
+    where: {
+      id: projectId,
+      createdBy: userId,
+    },
+  });
+
+  if (!project) {
     return NextResponse.json(
       {
-        error: 'Single Project Id required',
+        error: 'Project not found or you do not have access',
       },
-      {
-        status: 400,
-      },
+      { status: 404 },
     );
-
-  if (!session)
-    return NextResponse.json(
-      {
-        error: 'You must be logged in.',
-      },
-      {
-        status: 401,
-      },
-    );
-
-  const userId = session.userDetails?.userId;
-
-  if (!userId)
-    return NextResponse.json(
-      {
-        error: 'User not found.',
-      },
-      {
-        status: 404,
-      },
-    );
+  }
 
   const logs = await prisma.log.findMany({
     where: {

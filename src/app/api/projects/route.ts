@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 import prisma from '@/database/client';
-import { getUserId, ensureUserId } from '@/utils/auth';
+import { ensureUserId, getUserId } from '@/utils/auth';
 import { withValidation } from '@/utils/validation';
 
 // Define the schema for project creation
@@ -12,14 +12,17 @@ export const ProjectPostSchema = z.object({
     name: z.string().min(1, 'Project name is required'),
     description: z.string().optional(),
     photo: z.string().optional(),
-    isPrivate: z.boolean().default(false)
-  })
+    isPrivate: z.boolean().default(false),
+  }),
 });
 
 // POST handler with validation middleware
 export const POST = withValidation(
-  ProjectPostSchema, 
-  async (request: NextRequest, validatedData: z.infer<typeof ProjectPostSchema>) => {
+  ProjectPostSchema,
+  async (
+    request: NextRequest,
+    validatedData: z.infer<typeof ProjectPostSchema>,
+  ) => {
     // Get userId from request headers (set by middleware)
     const userId = getUserId(request);
     ensureUserId(userId);
@@ -64,7 +67,7 @@ export const POST = withValidation(
     return NextResponse.json({
       status: 200,
     });
-  }
+  },
 );
 
 export async function GET(request: NextRequest) {
