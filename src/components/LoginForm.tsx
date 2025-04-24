@@ -1,6 +1,12 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react';
+import { useEffect } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import type { ZodType } from 'zod';
+import { z } from 'zod';
 
 import { Button } from '@/components/Button';
 import { FormInput } from '@/components/FormInput';
@@ -8,20 +14,41 @@ import { GoogleAuthButton } from '@/components/GoogleAuthButton';
 import { HorizDivider } from '@/components/HorizDivider';
 import { LogoZ } from '@/components/LogoZ';
 
-type FormFields = {
+type FormData = {
   email: string;
-  password: string;
 };
 
-const LoginForm = () => {
+const LoginSchema: ZodType<FormData> = z.object({
+  email: z.string({ required_error: 'Email is required' }).email(),
+});
+
+const LoginForm: React.FC = () => {
+  const { data: session } = useSession();
+
+  const router = useRouter();
+
+  console.log({ session });
+
+  useEffect(() => {
+    if (session && !session?.userDetails?.username) {
+      router.push('/auth/onboarding');
+    } else if (session) {
+      router.push('/dashboard');
+    }
+  }, [router, session]);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormFields>();
+  } = useForm<FormData>({
+    resolver: zodResolver(LoginSchema),
+  });
 
-  const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log({ data });
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    const { email } = data;
+
+    signIn('email', { email, redirect: false });
   };
 
   return (
@@ -40,7 +67,7 @@ const LoginForm = () => {
             Don&apos;t have an account?{' '}
             <Link
               className="text-textMain dark:text-darkTextMain"
-              href="/register"
+              href="/auth/register"
             >
               Create one for free
             </Link>
@@ -64,7 +91,7 @@ const LoginForm = () => {
       <HorizDivider label="OR" />
       <div className="mb-6">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormInput<FormFields>
+          <FormInput<FormData>
             className="mb-2"
             errors={errors}
             id="email"
@@ -73,15 +100,6 @@ const LoginForm = () => {
             register={register}
             rules={{ required: 'Email is required.' }}
             type="text"
-          />
-          <FormInput<FormFields>
-            id="password"
-            errors={errors}
-            label="Password"
-            name="password"
-            register={register}
-            rules={{ required: 'Password is required.' }}
-            type="password"
           />
           <Button className="mt-2 w-full" type="submit" variant="secondary">
             Continue

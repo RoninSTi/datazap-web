@@ -1,11 +1,11 @@
 'use client';
 
-import { LoginForm } from '@/components/LoginForm';
+import { RegisterForm } from '@/components/RegisterForm';
 
 const Login: React.FC = () => {
   return (
     <div className="flex h-screen w-full items-center justify-center bg-surfacePrimary dark:bg-darkSurfacePrimary">
-      <LoginForm />
+      <RegisterForm />
     </div>
   );
 };
