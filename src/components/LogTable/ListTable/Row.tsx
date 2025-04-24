@@ -3,6 +3,7 @@ import React from 'react';
 
 import { useFavoriteLog } from '@/api/mutations/favorites';
 import { Checkbox } from '@/components/Checkbox';
+import { DropDownMenu } from '@/components/DropDownMenu/DropDownMenu';
 import { KebobButton } from '@/components/Icons/Buttons/KebobButton';
 import { StarButton } from '@/components/Icons/Buttons/StarButton';
 import { Logs } from '@/components/Icons/Logs';
@@ -13,7 +14,6 @@ import type { StoredLog } from '@/types/log';
 
 import { Cell } from '../../Table/Cell';
 import { Row as TableRow } from '../../Table/Row';
-import { DropDownMenu } from '@/components/DropDownMenu/DropDownMenu';
 
 type Props = {
   isFavorite: boolean;

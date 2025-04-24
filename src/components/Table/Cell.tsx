@@ -19,18 +19,14 @@ const Cell: React.FC<PropsWithChildren<CellProps>> = ({
   width,
 }) => (
   <div
-    className={classNames(
-      className, 
-      'flex items-center', 
-      {
-        'flex-1': expanding,
-        'justify-center': textAlign === 'center',
-        'justify-start': textAlign === 'start',
-        'justify-end': textAlign === 'end',
-        'truncate': truncate,
-        [width || '']: width !== undefined,
-      }
-    )}
+    className={classNames(className, 'flex items-center', {
+      'flex-1': expanding,
+      'justify-center': textAlign === 'center',
+      'justify-start': textAlign === 'start',
+      'justify-end': textAlign === 'end',
+      truncate,
+      [width || '']: width !== undefined,
+    })}
     role="cell"
   >
     {children}

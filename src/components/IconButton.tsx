@@ -1,14 +1,16 @@
 'use client';
 
-import classnames from 'classnames';
-import type { PropsWithChildren } from 'react';
+import classNames from 'classnames';
+import React, { type PropsWithChildren } from 'react';
 
 type Props = {
   className?: string;
   id?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onMouseOver?: () => void;
+  onFocus?: () => void;
   onMouseOut?: () => void;
+  onBlur?: () => void;
   variant?: 'primary' | 'bubble' | 'bubble-destructive';
   style?: React.CSSProperties;
 } & PropsWithChildren;
@@ -20,12 +22,14 @@ const IconButton: React.FC<Props> = ({
   onClick,
   onMouseOut,
   onMouseOver,
+  onFocus,
+  onBlur,
   style,
   variant = 'primary',
 }) => {
   return (
     <button
-      className={classnames(
+      className={classNames(
         className,
         'text-textMain',
         'dark:text-darkTextMain',
@@ -40,7 +44,9 @@ const IconButton: React.FC<Props> = ({
       id={id}
       onClick={onClick}
       onMouseOver={onMouseOver}
+      onFocus={onFocus || onMouseOver} // Use onMouseOver as fallback for onFocus
       onMouseOut={onMouseOut}
+      onBlur={onBlur || onMouseOut} // Use onMouseOut as fallback for onBlur
       style={style}
       type="button"
     >

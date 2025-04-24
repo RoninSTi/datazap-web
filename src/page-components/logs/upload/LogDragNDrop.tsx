@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { DragNdrop } from "@/components/DragNDropUpload/DragNDrop";
-import { DnD } from "@/components/Icons/DnD";
-import { BodyMediumBold } from "@/components/Typography/BodyMediumBold";
+import { DragNdrop } from '@/components/DragNDropUpload/DragNDrop';
+import { DnD } from '@/components/Icons/DnD';
+import { BodyMediumBold } from '@/components/Typography/BodyMediumBold';
 
 interface Props {
   onFilesSelected: (files: File[]) => void;
@@ -20,7 +20,7 @@ const LogDragNDrop: React.FC<Props> = ({ onFilesSelected }) => {
             Drop your .csv files here, or click to browse.
           </BodyMediumBold>
         </div>
-        <div className="flex flex-row items-center justify-between gap-6 text-[10px] font-extrabold text-textPlaceholder dark:text-darkTextPlaceholder uppercase">
+        <div className="flex flex-row items-center justify-between gap-6 text-[10px] font-extrabold uppercase text-textPlaceholder dark:text-darkTextPlaceholder">
           <div>Upgrade to increase limits:</div>
           <div>
             File size: <span>3MB</span>

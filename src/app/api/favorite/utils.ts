@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+
 import prisma from '@/database/client';
 
 /**
@@ -11,10 +12,7 @@ export async function toggleLogFavorite(userId: string, logId: string) {
   });
 
   if (!log) {
-    return NextResponse.json(
-      { error: 'Log not found' },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: 'Log not found' }, { status: 404 });
   }
 
   const isExisting = await prisma.logFavorite.findFirst({
@@ -63,10 +61,7 @@ export async function toggleProjectFavorite(userId: string, projectId: string) {
   });
 
   if (!project) {
-    return NextResponse.json(
-      { error: 'Project not found' },
-      { status: 404 }
-    );
+    return NextResponse.json({ error: 'Project not found' }, { status: 404 });
   }
 
   const isExisting = await prisma.projectFavorite.findFirst({

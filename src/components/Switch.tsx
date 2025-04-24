@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Switch: React.FC<Props> = ({ checked, label, subLabel, onChange }) => {
-  const showLabel = label !== undefined || subLabel != undefined;
+  const showLabel = label !== undefined || subLabel !== undefined;
 
   return (
     <div className="flex items-center">

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useGetProjects } from '@/api/queries/projects';
-import { Table, Body } from '@/components/Table';
+import { Body, Table } from '@/components/Table';
 
 import { Header } from './Header';
 import { Row } from './Row';
@@ -14,7 +14,9 @@ const ProjectTable: React.FC = () => {
   return (
     <Table ariaLabel="Projects Table">
       <Header projects={projects} />
-      <Body emptyState={<div className="p-8 text-center">No projects found</div>}>
+      <Body
+        emptyState={<div className="p-8 text-center">No projects found</div>}
+      >
         {projects.map((project) => (
           <Row key={project.id} project={project} />
         ))}

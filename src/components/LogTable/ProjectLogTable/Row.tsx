@@ -42,7 +42,10 @@ const Row: React.FC<Props> = ({ isFavorite, isSelected, log }) => {
   return (
     <TableRow selected={isSelected}>
       <Cell width="w-[56px]" textAlign="center">
-        <Checkbox onChange={handleCheckboxOnChange} state={isSelected ? 'checked' : 'default'} />
+        <Checkbox
+          onChange={handleCheckboxOnChange}
+          state={isSelected ? 'checked' : 'default'}
+        />
       </Cell>
       <Cell expanding textAlign="start">
         <div className="mr-4 text-textPlaceholder dark:text-darkTextPlaceholder">

@@ -38,8 +38,8 @@ const Row: React.FC<Props> = ({ project }) => {
   const isSelected = selectedProjects.some((el) => el === project.id);
 
   return (
-    <TableRow 
-      path={`/projects/${project.id}`} 
+    <TableRow
+      path={`/projects/${project.id}`}
       key={project.id}
       selected={isSelected}
     >

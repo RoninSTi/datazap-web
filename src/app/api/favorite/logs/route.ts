@@ -3,8 +3,9 @@ import { NextResponse } from 'next/server';
 import type { z } from 'zod';
 
 import prisma from '@/database/client';
-import { getUserId, ensureUserId } from '@/utils/auth';
+import { ensureUserId, getUserId } from '@/utils/auth';
 import { withValidation } from '@/utils/validation';
+
 import { FavoriteLogSchema } from '../schemas';
 import { toggleLogFavorite } from '../utils';
 
@@ -12,18 +13,18 @@ import { toggleLogFavorite } from '../utils';
 export const POST = withValidation(
   FavoriteLogSchema,
   async (
-    request: NextRequest, 
-    validatedData: z.infer<typeof FavoriteLogSchema>
+    request: NextRequest,
+    validatedData: z.infer<typeof FavoriteLogSchema>,
   ) => {
     // Get userId from request headers (set by middleware)
     const userId = getUserId(request);
     ensureUserId(userId);
 
     const { logId } = validatedData.data;
-    
+
     // Use the utility function to toggle the favorite
     return toggleLogFavorite(userId, logId);
-  }
+  },
 );
 
 export async function GET(request: NextRequest) {

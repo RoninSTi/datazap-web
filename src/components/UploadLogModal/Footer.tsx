@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { Button } from "@/components/Button";
-import { Footer as ModalFooter } from "@/components/Modal/Footer";
-import { LogToBeUploaded } from "@/types/log";
+import { Button } from '@/components/Button';
+import { Footer as ModalFooter } from '@/components/Modal/Footer';
+import type { LogToBeUploaded } from '@/types/log';
 
 interface Props {
   logs: LogToBeUploaded[];

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { UseQueryResult, useQuery } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 
 import type { ProjectFavorite } from '@/types/favorites';
 import type { LogFavorite } from '@/types/log';
@@ -34,7 +35,10 @@ export const getProjectFavorites = async () => {
   return data;
 };
 
-export const useGetProjectFavorites: () => UseQueryResult<ProjectFavoriteResponse, unknown> = () => {
+export const useGetProjectFavorites: () => UseQueryResult<
+  ProjectFavoriteResponse,
+  unknown
+> = () => {
   return useQuery(['projectFavorites'], () => getProjectFavorites(), {
     keepPreviousData: true,
   });

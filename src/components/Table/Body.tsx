@@ -7,30 +7,46 @@ interface BodyProps {
   isLoading?: boolean;
 }
 
-const Body: React.FC<PropsWithChildren<BodyProps>> = ({ 
+const Body: React.FC<PropsWithChildren<BodyProps>> = ({
   children,
   className = '',
   emptyState,
   isLoading = false,
 }) => {
   const hasChildren = React.Children.count(children) > 0;
-  
-  return (
-    <div className={`flex flex-col ${className}`} role="rowgroup">
-      {isLoading ? (
+
+  // Default empty state if not provided
+  const defaultEmptyState = (
+    <div className="flex w-full items-center justify-center p-10">
+      <p className="text-deemphasis dark:text-darkTextDeemphasis">
+        No items found
+      </p>
+    </div>
+  );
+
+  // Determine what content to render
+  const renderContent = () => {
+    if (isLoading) {
+      return (
         <div className="flex w-full items-center justify-center p-10">
           {/* Could add a spinner component here */}
-          <p className="text-deemphasis dark:text-darkTextDeemphasis">Loading...</p>
+          <p className="text-deemphasis dark:text-darkTextDeemphasis">
+            Loading...
+          </p>
         </div>
-      ) : hasChildren ? (
-        children
-      ) : emptyState ? (
-        emptyState
-      ) : (
-        <div className="flex w-full items-center justify-center p-10">
-          <p className="text-deemphasis dark:text-darkTextDeemphasis">No items found</p>
-        </div>
-      )}
+      );
+    }
+
+    if (hasChildren) {
+      return children;
+    }
+
+    return emptyState || defaultEmptyState;
+  };
+
+  return (
+    <div className={`flex flex-col ${className}`} role="rowgroup">
+      {renderContent()}
     </div>
   );
 };

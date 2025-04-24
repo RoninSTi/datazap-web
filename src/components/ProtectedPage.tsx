@@ -12,7 +12,7 @@ const ProtectedPage: React.FC<PropsWithChildren> = ({ children }) => {
     if (status === 'unauthenticated') redirect('/auth/signin');
   }, [status]);
 
-  return <div className="flex flex-col flex-1">{children}</div>;
+  return <div className="flex flex-1 flex-col">{children}</div>;
 };
 
 export { ProtectedPage };

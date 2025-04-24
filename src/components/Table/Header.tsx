@@ -6,13 +6,15 @@ interface HeaderProps {
   sticky?: boolean;
 }
 
-const Header: React.FC<PropsWithChildren<HeaderProps>> = ({ 
+const Header: React.FC<PropsWithChildren<HeaderProps>> = ({
   children,
   className = '',
   sticky = false,
 }) => (
-  <div 
-    className={`flex w-full border-b-1 border-borderDeemphasis px-10 py-5 dark:border-darkBorderDeemphasis ${sticky ? 'sticky top-0 z-10 bg-white dark:bg-black' : ''} ${className}`}
+  <div
+    className={`flex w-full border-b-1 border-borderDeemphasis px-10 py-5 dark:border-darkBorderDeemphasis ${
+      sticky ? 'sticky top-0 z-10 bg-white dark:bg-black' : ''
+    } ${className}`}
     role="rowgroup"
   >
     <div className="flex w-full items-center" role="row">

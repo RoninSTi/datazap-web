@@ -1,7 +1,7 @@
 'use client';
 
 import classNames from 'classnames';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { PropsWithChildren } from 'react';
 import React from 'react';
 
@@ -21,28 +21,40 @@ const Row: React.FC<PropsWithChildren<RowProps>> = ({
   disabled = false,
   className = '',
 }) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (disabled) return;
+
+    if (path) {
+      router.push(path);
+    } else if (onClick) {
+      onClick();
+    }
+  };
+
   const handleOnKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (disabled || (event.key !== 'Enter' && event.key !== ' ')) return;
 
     event.preventDefault();
-    if (onClick !== undefined) onClick();
+    handleClick();
   };
 
   const baseClasses = classNames(
     'flex w-full border-b-1 border-borderDeemphasis px-10 py-5 dark:border-darkBorderDeemphasis',
     {
-      'hover:bg-surfaceSecondary hover:dark:bg-darkSurfaceSecondary cursor-pointer': 
-        onClick !== undefined && !disabled,
+      'hover:bg-surfaceSecondary hover:dark:bg-darkSurfaceSecondary cursor-pointer':
+        (onClick !== undefined || path !== undefined) && !disabled,
       'bg-surfaceSecondary dark:bg-darkSurfaceSecondary': selected,
-      'opacity-50 cursor-not-allowed': disabled
+      'opacity-50 cursor-not-allowed': disabled,
     },
-    className
+    className,
   );
 
-  return path === undefined ? (
+  return (
     <div
       className={baseClasses}
-      onClick={disabled ? undefined : onClick}
+      onClick={handleClick}
       onKeyDown={handleOnKeyDown}
       role="row"
       aria-selected={selected}
@@ -51,19 +63,6 @@ const Row: React.FC<PropsWithChildren<RowProps>> = ({
     >
       {children}
     </div>
-  ) : (
-    <Link
-      className={baseClasses}
-      href={disabled ? '#' : path}
-      role="row"
-      aria-disabled={disabled}
-      tabIndex={disabled ? -1 : 0}
-      onClick={e => {
-        if (disabled) e.preventDefault();
-      }}
-    >
-      {children}
-    </Link>
   );
 };
 

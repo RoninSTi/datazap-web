@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useGetLogFavorites } from '@/api/queries/favorites';
 import { useGetProjectLogs } from '@/api/queries/projectLogs';
-import { Table, Body } from '@/components/Table';
+import { Body, Table } from '@/components/Table';
 import { useBulkLogStore } from '@/store/bulkLogs';
 import type { Project } from '@/types/project';
 

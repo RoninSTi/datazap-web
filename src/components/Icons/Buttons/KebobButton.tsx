@@ -1,24 +1,31 @@
 import { MenuButton } from '@headlessui/react';
 import React, { useState } from 'react';
 
-import { IconButton } from '@/components/IconButton';
-
 import { KebobDefault } from '../KebobDefault';
 import { KebobHover } from '../KebobHover';
 
 const KebobButton: React.FC = () => {
   const [isHover, setIsHover] = useState<boolean>(false);
 
-  const defaultState = !isHover;
+  const handleHoverStart = () => {
+    setIsHover(true);
+  };
+
+  const handleHoverEnd = () => {
+    setIsHover(false);
+  };
 
   return (
     <MenuButton className="flex">
       <div
-        onMouseOver={() => setIsHover(true)}
-        onMouseOut={() => setIsHover(false)}
+        onMouseOver={handleHoverStart}
+        onFocus={handleHoverStart}
+        onMouseOut={handleHoverEnd}
+        onBlur={handleHoverEnd}
+        tabIndex={0} // Make div focusable for keyboard users
+        role="button" // Add ARIA role for div that acts as a button
       >
-        {defaultState && <KebobDefault />}
-        {isHover && <KebobHover />}
+        {!isHover ? <KebobDefault /> : <KebobHover />}
       </div>
     </MenuButton>
   );

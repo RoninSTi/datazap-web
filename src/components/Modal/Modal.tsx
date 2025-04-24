@@ -36,6 +36,8 @@ const Modal: React.FC<PropsWithChildren<Props>> = ({
         onKeyDown={handleOnKeyDown}
         role="button"
         tabIndex={0}
+        aria-label="Close modal"
+        title="Close modal"
       />
       <div
         className={classNames(

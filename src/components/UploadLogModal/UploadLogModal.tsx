@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { Modal } from "@/components/Modal/Modal";
-import type { Project } from "@/types/project";
+import { useAddLogs } from '@/api/mutations/logs';
+import { useGetMe } from '@/api/queries/user';
+import { Modal } from '@/components/Modal/Modal';
+import useUploadFiles from '@/hooks/useUploadFiles';
+import { LogDragNDrop } from '@/page-components/logs/upload/LogDragNDrop';
+import type { LogToBeUploaded } from '@/types/log';
+import type { Project } from '@/types/project';
 
-import { Footer } from "./Footer";
-import { Header } from "./Header";
-import { LogDragNDrop } from "@/page-components/logs/upload/LogDragNDrop";
-import { LogRow } from "./LogRow";
-import useUploadFiles from "@/hooks/useUploadFiles";
-import { useGetMe } from "@/api/queries/user";
-import { LogToBeUploaded } from "@/types/log";
-import { useAddLogs } from "@/api/mutations/logs";
+import { Footer } from './Footer';
+import { Header } from './Header';
+import { LogRow } from './LogRow';
 
 interface Props {
   onClose: () => void;
@@ -30,7 +30,7 @@ const UploadLogModal: React.FC<Props> = ({ onClose, project, show }) => {
   const handleOnFilesSelected = async (files: File[]) => {
     const response: LogToBeUploaded[] | undefined = await upload({
       files,
-      key: "logs",
+      key: 'logs',
       userData,
     });
 
@@ -51,8 +51,10 @@ const UploadLogModal: React.FC<Props> = ({ onClose, project, show }) => {
 
   const handleOnSubmit = async () => {
     await mutateAsync({
-      logs: logs.map(({ key, ...rest }) =>
-        project === undefined ? { ...rest } : { ...rest, projectId: project.id }
+      logs: logs.map(({ key: _key, ...rest }) =>
+        project === undefined
+          ? { ...rest }
+          : { ...rest, projectId: project.id },
       ),
     });
 

@@ -1,11 +1,11 @@
-import { Menu, MenuItem, MenuItems } from '@headlessui/react';
+import { Menu, MenuItems } from '@headlessui/react';
 import classNames from 'classnames';
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactElement, ReactNode } from 'react';
 import React from 'react';
 
 interface Props {
   className?: string;
-  MenuButton: React.FC;
+  MenuButton: ReactNode | (() => ReactElement);
 }
 
 const DropDownMenu: React.FC<PropsWithChildren<Props>> = ({
@@ -16,8 +16,12 @@ const DropDownMenu: React.FC<PropsWithChildren<Props>> = ({
   return (
     <div className={classNames('flex', className)}>
       <Menu>
-        <MenuButton />
-        <MenuItems className="bg-surfaceTertiary dark:bg-darkSurfaceTertiary rounded-lg border-1 border-borderMain dark:border-darkBorderMain z-50" transition anchor="bottom end">
+        {typeof MenuButton === 'function' ? <MenuButton /> : MenuButton}
+        <MenuItems
+          className="z-50 rounded-lg border-1 border-borderMain bg-surfaceTertiary dark:border-darkBorderMain dark:bg-darkSurfaceTertiary"
+          transition
+          anchor="bottom end"
+        >
           {children}
         </MenuItems>
       </Menu>

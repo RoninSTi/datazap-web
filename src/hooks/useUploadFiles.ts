@@ -1,8 +1,9 @@
-import { MeResponse } from '@/api/queries/user';
-import { LogToBeUploaded } from '@/types/log';
 import S3 from 'aws-sdk/clients/s3';
 import { uuid } from 'next-s3-upload';
 import { useCallback } from 'react';
+
+import type { MeResponse } from '@/api/queries/user';
+import type { LogToBeUploaded } from '@/types/log';
 
 const s3params = {
   accessKeyId: process.env.NEXT_PUBLIC_S3_UPLOAD_KEY,
@@ -19,8 +20,13 @@ interface Params {
 }
 
 const useUploadFiles = () => {
-  const upload = useCallback(async ({ files, key, userData }: Params) => {
-      if (files.length === 0) return;
+  const upload = useCallback(
+    async ({
+      files,
+      key,
+      userData,
+    }: Params): Promise<LogToBeUploaded[] | undefined> => {
+      if (files.length === 0) return undefined;
 
       const uploads = files.map((file) => {
         const params = {
@@ -47,17 +53,17 @@ const useUploadFiles = () => {
           key: uuid(),
         })) satisfies LogToBeUploaded[];
 
-        return fileData
+        return fileData;
       } catch (err) {
-        throw err instanceof Error ? err: new Error("Upload failed")
+        throw err instanceof Error ? err : new Error('Upload failed');
       }
     },
     [],
   );
 
   return {
-    upload
-  }
-}
+    upload,
+  };
+};
 
 export default useUploadFiles;

@@ -1,4 +1,4 @@
-import { ErrorMessage } from "@hookform/error-message";
+import { ErrorMessage } from '@hookform/error-message';
 import type {
   DeepMap,
   FieldError,
@@ -6,12 +6,12 @@ import type {
   Path,
   RegisterOptions,
   UseFormRegister,
-} from "react-hook-form";
+} from 'react-hook-form';
 
-import type { Props } from "@/components/Input";
-import { Input } from "@/components/Input";
+import type { Props } from '@/components/Input';
+import { Input } from '@/components/Input';
 
-import { BodyMediumBold } from "./Typography/BodyMediumBold";
+import { BodyMediumBold } from './Typography/BodyMediumBold';
 
 export type FormInputProps<TFormValues extends FieldValues> = {
   errors?: Partial<DeepMap<TFormValues, FieldError>>;
@@ -21,7 +21,7 @@ export type FormInputProps<TFormValues extends FieldValues> = {
   rules?: RegisterOptions;
   label?: string;
   inputClassName?: string;
-} & Omit<Props, "name" | "label">;
+} & Omit<Props, 'name' | 'label'>;
 
 const FormInput = <TFormValues extends Record<string, unknown>>({
   className,
@@ -52,11 +52,11 @@ const FormInput = <TFormValues extends Record<string, unknown>>({
         <ErrorMessage
           errors={errors}
           name={name as any}
-          render={({ message }) =>
-              <p className="mt-1 block text-left font-serif text-sm text-red-600">
-                {message}
-              </p>
-          }
+          render={({ message }) => (
+            <p className="mt-1 block text-left font-serif text-sm text-red-600">
+              {message}
+            </p>
+          )}
         />
       </label>
     </div>
