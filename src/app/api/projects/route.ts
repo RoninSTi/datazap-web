@@ -1,103 +1,76 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { z } from 'zod';
 
-import { authOptions } from '@/config/auth';
 import prisma from '@/database/client';
-import type { ProjectPostBody, ProjectPostRequest } from '@/types/next-auth';
+import { getUserId, ensureUserId } from '@/utils/auth';
+import { withValidation } from '@/utils/validation';
 
-export async function POST(request: ProjectPostRequest) {
-  const session = await getServerSession(authOptions);
+// Define the schema for project creation
+export const ProjectPostSchema = z.object({
+  data: z.object({
+    name: z.string().min(1, 'Project name is required'),
+    description: z.string().optional(),
+    photo: z.string().optional(),
+    isPrivate: z.boolean().default(false)
+  })
+});
 
-  if (!session)
-    return NextResponse.json(
-      {
-        error: 'You must be logged in.',
+// POST handler with validation middleware
+export const POST = withValidation(
+  ProjectPostSchema, 
+  async (request: NextRequest, validatedData: z.infer<typeof ProjectPostSchema>) => {
+    // Get userId from request headers (set by middleware)
+    const userId = getUserId(request);
+    ensureUserId(userId);
+
+    const projectCount = await prisma.project.count({
+      where: {
+        createdBy: userId,
       },
-      {
-        status: 401,
+    });
+
+    const userDetails = await prisma.userDetails.findUnique({
+      where: {
+        userId,
       },
-    );
+    });
 
-  const userId = session.userDetails?.userId;
+    const projectLimit = userDetails?.projectLimit ?? 0;
 
-  if (!userId)
-    return NextResponse.json(
-      {
-        error: 'User not found.',
+    if (projectCount >= projectLimit) {
+      return NextResponse.json(
+        {
+          error: 'Limit Exceeded',
+        },
+        {
+          status: 403,
+        },
+      );
+    }
+
+    const { data: project } = validatedData;
+
+    await prisma.project.create({
+      data: {
+        name: project.name,
+        description: project.description,
+        photo: project.photo,
+        createdBy: userId,
+        isPrivate: project.isPrivate,
       },
-      {
-        status: 404,
-      },
-    );
+    });
 
-  const projectCount = await prisma.project.count({
-    where: {
-      createdBy: userId,
-    },
-  });
-
-  const userDetails = await prisma.userDetails.findUnique({
-    where: {
-      userId,
-    },
-  });
-
-  const projectLimit = userDetails?.projectLimit ?? 0;
-
-  if (projectCount >= projectLimit) {
-    NextResponse.json(
-      {
-        error: 'Limit Exceeded',
-      },
-      {
-        status: 403,
-      },
-    );
+    return NextResponse.json({
+      status: 200,
+    });
   }
+);
 
-  const body: { data: ProjectPostBody } = await request.json();
-
-  const project = body.data;
-
-  await prisma.project.create({
-    data: {
-      name: project.name,
-      description: project.description,
-      photo: project.photo,
-      createdBy: userId,
-      isPrivate: project.isPrivate,
-    },
-  });
-
-  return NextResponse.json({
-    status: 200,
-  });
-}
-
-export async function GET() {
-  const session = await getServerSession(authOptions);
-
-  if (!session)
-    return NextResponse.json(
-      {
-        error: 'You must be logged in.',
-      },
-      {
-        status: 401,
-      },
-    );
-
-  const userId = session.userDetails?.userId;
-
-  if (!userId)
-    return NextResponse.json(
-      {
-        error: 'User not found.',
-      },
-      {
-        status: 404,
-      },
-    );
+export async function GET(request: NextRequest) {
+  // Get userId from request headers (set by middleware)
+  const userId = getUserId(request);
+  ensureUserId(userId);
 
   const projects = await prisma.project.findMany({
     where: {

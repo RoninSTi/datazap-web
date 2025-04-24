@@ -11,7 +11,11 @@ const Table: React.FC<PropsWithChildren<TableProps>> = ({
   className = '',
   ariaLabel = 'Data table',
 }) => (
-  <div className={`flex h-full flex-1 flex-col ${className}`} role="table" aria-label={ariaLabel}>
+  <div
+    className={`flex h-full flex-1 flex-col ${className}`}
+    role="table"
+    aria-label={ariaLabel}
+  >
     {children}
   </div>
 );

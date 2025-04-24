@@ -1,10 +1,10 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 
-import { authOptions } from '@/config/auth';
 import prisma from '@/database/client';
+import { ensureUserId, getUserId } from '@/utils/auth';
+import { withValidation } from '@/utils/validation';
 
 export const LogPostRequestSchema = z
   .object({
@@ -17,104 +17,56 @@ export const LogPostRequestSchema = z
   })
   .array();
 
-export async function POST(request: NextRequest) {
-  const session = await getServerSession(authOptions);
+// POST handler with validation middleware
+export const POST = withValidation(
+  LogPostRequestSchema,
+  async (
+    request: NextRequest,
+    validatedData: z.infer<typeof LogPostRequestSchema>,
+  ) => {
+    // Get userId from request headers (set by middleware)
+    const userId = getUserId(request);
+    ensureUserId(userId);
 
-  if (!session)
-    return NextResponse.json(
-      {
-        error: 'You must be logged in.',
+    const logCount = await prisma.log.count({
+      where: {
+        createdBy: userId,
       },
-      {
-        status: 401,
+    });
+
+    const userDetails = await prisma.userDetails.findUnique({
+      where: {
+        userId,
       },
-    );
+    });
 
-  const userId = session.userDetails?.userId;
+    const logLimit = userDetails?.logLimit ?? 0;
 
-  if (!userId)
-    return NextResponse.json(
-      {
-        error: 'User not found.',
-      },
-      {
-        status: 404,
-      },
-    );
+    if (logCount >= logLimit) {
+      return NextResponse.json(
+        {
+          error: 'Limit Exceeded',
+        },
+        {
+          status: 403,
+        },
+      );
+    }
 
-  const body = await request.json();
+    await prisma.log.createMany({
+      data: validatedData.map((log) => ({ ...log, createdBy: userId })),
+    });
 
-  const parsedBody = LogPostRequestSchema.safeParse(body);
+    return NextResponse.json({
+      status: 201,
+    });
+  },
+);
 
-  if (parsedBody.success === false) {
-    NextResponse.json(
-      {
-        error: parsedBody.error,
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
-  const logCount = await prisma.log.count({
-    where: {
-      createdBy: userId,
-    },
-  });
-
-  const userDetails = await prisma.userDetails.findUnique({
-    where: {
-      userId,
-    },
-  });
-
-  const logLimit = userDetails?.logLimit ?? 0;
-
-  if (logCount >= logLimit) {
-    NextResponse.json(
-      {
-        error: 'Limit Exceeded',
-      },
-      {
-        status: 403,
-      },
-    );
-  }
-
-  await prisma.log.createMany({
-    data: parsedBody.data?.map((log) => ({ ...log, createdBy: userId })) ?? [],
-  });
-
-  return NextResponse.json({
-    status: 201,
-  });
-}
-
-export async function GET() {
-  const session = await getServerSession(authOptions);
-
-  if (!session)
-    return NextResponse.json(
-      {
-        error: 'You must be logged in.',
-      },
-      {
-        status: 401,
-      },
-    );
-
-  const userId = session.userDetails?.userId;
-
-  if (!userId)
-    return NextResponse.json(
-      {
-        error: 'User not found.',
-      },
-      {
-        status: 404,
-      },
-    );
+export async function GET(request: NextRequest) {
+  // Get userId from request headers (set by middleware)
+  const userId = getUserId(request);
+  ensureUserId(userId);
 
   const logs = await prisma.log.findMany({
     where: {
